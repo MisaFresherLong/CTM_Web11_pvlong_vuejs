@@ -2,6 +2,38 @@
   --image-url: url(../assets/img/Sprites.64af8f61.svg)
 }
 
+.m-icon-14 {
+  width: 14px;
+  height: 14px;
+  background-image: var(--image-url);
+  background-repeat: no-repeat;
+}
+
+.m-icon-16 {
+  width: 16px;
+  height: 16px;
+  background-image: var(--image-url);
+  background-repeat: no-repeat;
+}
+
+.m-icon-24 {
+  width: 24px;
+  height: 24px;
+  background-image: var(--image-url);
+  background-repeat: no-repeat;
+}
+
+.m-icon-48 {
+  width: 48px;
+  height: 48px;
+  background-image: var(--image-url);
+  background-repeat: no-repeat;
+}
+
+.m-icon-checkbox-active {
+  background-position: -1224px -360px;
+}
+
 .icon-16 {
   background-image: var(--image-url);
   background-repeat: no-repeat;

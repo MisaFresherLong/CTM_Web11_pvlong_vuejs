@@ -116,7 +116,7 @@
 
 .sidebar__menu-functions {
   height: calc(100% - 36px);
-  /* overflow-y: auto; */
+  overflow-y: auto;
   padding: 0px 16px;
 }
 
@@ -237,7 +237,7 @@
 
 .main-content .m-table {
   cursor: pointer;
-  height: var(--main-table-height);
+  /* height: var(--main-table-height); */
 }
 
 .main-content .m-table-sticky {}
@@ -253,7 +253,7 @@
 }
 
 #popup-switch:checked+#employee-form {
-  display: block;
+  /* display: block; */
 }
 
 #employee-form .m-popup-container {
@@ -261,7 +261,7 @@
 }
 
 #employee-form {
-  display: none;
+  /* display: none; */
 }
 
 /* popup header */

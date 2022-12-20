@@ -1,111 +1,207 @@
 :root {
-  --internal-image-url: url(../../assets/img/Sprites.64af8f61.svg)
+  --table-with-paging-height: calc(100% - 24px);
+  --table-height: calc(var(--table-with-paging-height) - 2*16px - 32px);
 }
 
-.m-table {
-  max-width: 100%;
-  position: relative;
-}
-
-.m-table table {
-  width: 100%;
-  border-collapse: collapse;
-  border-radius: 4px;
-
-  overflow-x: auto;
-  white-space: nowrap;
-}
-
-.m-table__header {
-  position: sticky;
-  top: 0;
-  left: 0;
-  background-color: var(--table-header-background);
-  z-index: var(--table-header-zIndex);
-}
-
-.m-table-header__icon {
-  /* background: var(--internal-image-url) no-repeat -1129px -365px;
-    width: 24px;
-    height: 24px; */
-}
-
-.m-table th {
+th {
   text-transform: uppercase;
 }
 
-.m-table th,
-.m-table td {
-  height: var(--table-row-height);
-  padding: 8px;
-  border-left: 1px solid var(--wcag-border-color);
-  padding: 0 16px;
+td,
+th {
+  padding: 0 10px;
 }
 
-.m-table th:first-child,
-.m-table td:first-child {}
-
-.m-table th:not(:first-child),
-.m-table td:not(:first-child) {}
-
-.m-table tr {
-  border: 1px solid var(--wcag-border-color);
-  text-align: left;
+.m-table-container {
+  height: var(--table-with-paging-height);
 }
 
-.m-table tbody tr:hover td {
-  background-color: var(--table-hover-background);
-}
-
-.m-table .row-checkbox {
-  width: 16px;
-  height: 16px;
-}
-
-/* table sticky */
-.m-table-sticky {
-  border-left: 1px solid var(--wcag-border-color);
-  border-right: 1px solid var(--wcag-border-color);
-  height: 100%;
+.m-body-table {
   overflow: auto;
+  height: var(--table-height);
+  border-radius: var(--boder-radius);
+  border: 1px solid var(--wcag-border-color);
 }
 
-/* table sticky first column */
-.m-table-sticky.--sticky-first-col th:first-child,
-.m-table-sticky.--sticky-first-col td:first-child {
+.m-table {
+  border-spacing: 0;
+  min-width: 100%;
+}
+
+.m-table .m-thead .m-tr .m-th {
+  border-right: 1px solid #c7c7c7;
+  border-bottom: 1px solid #c7c7c7;
+  min-height: 48px;
+  height: 48px;
+  top: 0;
+  z-index: 2;
+  background-color: #e5e8ec;
+  vertical-align: middle;
+}
+
+.m-checkAll {
+  z-index: 3;
+  position: sticky;
+  left: 0;
+  top: 0;
+  min-width: 40px;
+  width: 40px;
+  max-width: 40px;
+}
+
+.m-thead {
   position: sticky;
   top: 0;
+  z-index: 100;
+}
+
+.m-th-widget {
+  border-right: none;
+  position: sticky;
+  right: 0;
+  z-index: 4;
+  border-left: 1px solid #c7c7c7;
+}
+
+.m-table-checkbox {
+  justify-content: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.m-input-checkbox,
+.m-input-checkall {
+  position: absolute;
+  width: 10%;
+  height: 100%;
+  opacity: 0;
+  z-index: 200;
+  cursor: pointer;
+}
+
+.m-input-checkbox:checked+.m-checkbox,
+.m-input-checkall:checked+.m-checkbox {
+  border: 1px solid #2ca01c;
+  transform: rotate(0deg);
+}
+
+.m-icon-checkbox-active {
+  display: none;
+}
+
+.m-input-checkbox:checked+.m-checkbox>.m-checkbox-inner>.m-icon-checkbox-active,
+.m-input-checkall:checked+.m-checkbox>.m-checkbox-inner>.m-icon-checkbox-active {
+  display: block;
+}
+
+.m-input-checkbox:focus+.m-checkbox::before,
+.m-input-checkall:focus+.m-checkbox::before {
+  content: "";
+  height: 22px;
+  width: 22px;
+  position: absolute;
+  border: 1px solid #a4dfff;
+  display: block;
+  border-radius: var(--boder-radius);
+}
+
+.m-checkbox {
+  top: 0;
+  left: 0;
+  transition: all .2s ease;
+  /* transform: rotate(-90deg); */
+  cursor: pointer;
+  position: relative;
+  display: block;
+  width: 18px;
+  height: 18px;
+  border-radius: var(--boder-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border: 1px solid #afafaf;
+  background: #fff;
+}
+
+.m-checkbox-inner {
+  width: inherit;
+  height: inherit;
+}
+
+.m-th-title {
+  display: flex;
+  font-size: 12px;
+  text-transform: uppercase;
+  align-items: center;
+  cursor: pointer;
+}
+
+.m-th-title-dob {
+  display: inline-block;
+  text-align: center;
+}
+
+.m-th-title-fc {
+  display: flex;
+  justify-content: center;
+  padding-right: 0;
+}
+
+.m-td-widget {
+  border-right: none;
+  position: sticky;
+  right: 0;
+  z-index: 2;
+  background-color: #fff;
+  border-left: 1px dotted #c7c7c7;
+}
+
+.m-tbody {
+  background-color: #fff;
+}
+
+.m-tr .m-td {
+  height: 48px;
+  border-bottom: 1px solid #c7c7c7;
+  border-right: 1px dotted #c7c7c7;
+}
+
+.m-tr .m-td-multi {
+  z-index: 2;
+  position: sticky;
+  background-color: #fff;
+}
+
+.m-tr .m-static-col {
+  background-color: #fff;
+}
+
+.m-tr:hover .m-td {
+  background-color: #f2f9ff;
+}
+
+.checked .m-td {
+  background-color: #e5f3ff;
+}
+
+th:first-child,
+td:first-child {
+  position: sticky;
   left: 0;
 }
 
-.m-table-sticky.--sticky-first-col th:first-child {
-  background-color: var(--table-header-background);
-}
-
-.m-table-sticky.--sticky-first-col td:first-child {
-  background-color: var(--table-body-background);
-}
-
-/* table sticky last column */
-
-.m-table-sticky.--sticky-last-col th:last-child,
-.m-table-sticky.--sticky-last-col td:last-child {
+th:last-child,
+td:last-child {
   position: sticky;
-  top: 0;
   right: 0;
 }
 
-.m-table-sticky.--sticky-last-col th:last-child {
-  background-color: var(--table-header-background);
-}
-
-.m-table-sticky.--sticky-last-col td:last-child {
-  background-color: var(--table-body-background);
-}
-
-
 /* paging */
 .m-table-paging {
+  height: 60px;
   padding: 12px 16px;
   display: flex;
   justify-content: space-between;
@@ -121,23 +217,27 @@
 }
 
 .m-table-pagin__rightPanel>div~div {
-  margin-left: 16px;
+  margin-left: 8px;
 }
 
-.m-table-paging__perPage {}
+.m-table-paging__list-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-.m-table-paging__currentRecord {}
+.m-table-paging__list-page>li {
+  list-style-type: none;
+  cursor: pointer;
+  padding: 4px;
+}
 
 .m-table-paging__previousPage {
-  background: var(--internal-image-url) no-repeat -36px -361px;
-  width: 8px;
-  height: 14px;
+  cursor: pointer;
 }
 
 .m-table-paging__nextPage {
-  background: var(--internal-image-url) no-repeat -84px -361px;
-  width: 8px;
-  height: 14px;
+  cursor: pointer;
 }
 
 /* table loading */

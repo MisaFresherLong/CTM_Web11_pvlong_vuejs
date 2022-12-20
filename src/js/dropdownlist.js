@@ -1,3 +1,4 @@
+import $ from "jquery";
 export class Dropdownlist {
   /**
    * Hàm khởi tạo dropdown gồm:
@@ -65,8 +66,8 @@ export class Dropdownlist {
     const me = this;
     $(this.dropdownElement)
       .find(".m-dropdownlist-data__item")
-      .each(function (index, element) {
-        $(this).click(function (event) {
+      .each(function () {
+        $(this).click(function () {
           me.mainInput.val($(this).text());
           me.mainInput.data(
             me.options.datasetKey,

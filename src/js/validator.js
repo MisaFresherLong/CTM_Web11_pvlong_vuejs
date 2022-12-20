@@ -1,3 +1,5 @@
+import $ from "jquery";
+/* eslint-disable */
 export function Validator(formId, options = {}) {
   const formRules = {};
 
@@ -49,17 +51,17 @@ export function Validator(formId, options = {}) {
     for (let input of inputs) {
       switch (input.type) {
         case "text": {
-          payload[input.name] = input.value;
+          payload[input.name] = input.value ? input.value : null;
           let datasetKey = $(input).data("item-key");
           if (datasetKey) payload[input.name] = datasetKey;
           break;
         }
         case "number": {
-          payload[input.name] = input.value;
+          payload[input.name] = input.value ? input.value : null;
           break;
         }
         case "date": {
-          payload[input.name] = input.value;
+          payload[input.name] = input.value ? input.value : null;
           break;
         }
         case "radio": {
@@ -77,7 +79,7 @@ export function Validator(formId, options = {}) {
           break;
         }
         default: {
-          payload[input.name] = input.value;
+          payload[input.name] = input.value ? input.value : null;
           break;
         }
       }
@@ -90,7 +92,9 @@ export function Validator(formId, options = {}) {
    */
   const formElement = document.getElementById(formId);
   if (formElement) {
-    const inputs = formElement.querySelectorAll("[name][rules]");
+    const inputs = formElement.querySelectorAll(
+      "[name][rules]:not([rules=''])"
+    );
 
     for (let input of inputs) {
       const rules = input.getAttribute("rules").split("|");
@@ -144,7 +148,7 @@ export function Validator(formId, options = {}) {
         messageElement.textContent = errorMessage;
         // messageElement.title = errorMessage;
       } else {
-        parentContainer.classList.add("--validated");
+        // parentContainer.classList.add("--validated");
         messageElement.textContent = "";
         // messageElement.title = "";
       }

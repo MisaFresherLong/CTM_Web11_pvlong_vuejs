@@ -1,4 +1,5 @@
-@import url(../css/grid-system.css);
+@import url(./grid-system.css);
+@import url(./icon.css);
 @import url(../css/base/button.css);
 @import url(../css/base/dialog.css);
 @import url(../css/base/dropdownlist.css);
@@ -11,7 +12,6 @@
 @import url(../css/base/scrollbar.css);
 @import url(../css/base/notify.css);
 @import url(./animation.css);
-@import url(./icon.css);
 
 @font-face {
   font-family: notosans-regular;
@@ -71,6 +71,7 @@
   --table-body-background: #FFFFFF;
   --table-hover-background: #F5F5F5;
   --table-header-zIndex: 10;
+  --boder-radius: 4px;
 
   /* popup */
   --popup-body-background: #FFFFFF;
@@ -81,16 +82,21 @@
 
   /* context menu */
   --context-menu-item-height: 30px;
-
-  /* image url */
-
-  --internal-image-url: url(../../assets/img/Sprites.64af8f61.svg)
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  /* font-family: inherit;
+  font-size: inherit;
+  outline: none;
+  text-transform: none;
+  text-decoration: none;
+  text-decoration-line: none;
+  text-decoration-thickness: initial;
+  text-decoration-style: solid;
+  text-decoration-color: initial; */
 }
 
 html {
@@ -144,32 +150,114 @@ input[type=number] {
 /* width */
 .w-50 {
   width: 50px;
+  min-width: 50px;
+  max-width: 50px;
 }
 
 .w-75 {
   width: 75px;
+  min-width: 75px;
+  max-width: 75px;
 }
 
 .w-100 {
   width: 100px;
+  min-width: 100px;
+  max-width: 100px;
 }
 
 .w-150 {
   width: 150px;
+  min-width: 150px;
+  max-width: 150px;
 }
 
 .w-200 {
   width: 200px;
+  min-width: 200px;
+  max-width: 200px;
 }
 
 .w-250 {
   width: 250px;
+  min-width: 250px;
+  max-width: 250px;
 }
 
 .w-300 {
   width: 300px;
+  min-width: 300px;
+  max-width: 300px;
 }
 
 .w-400 {
   width: 400px;
+  min-width: 400px;
+  max-width: 400px;
+}
+
+/* min-width */
+.min-w-50 {
+  min-width: 50px;
+}
+
+.min-w-75 {
+  min-width: 75px;
+}
+
+.min-w-100 {
+  min-width: 100px;
+}
+
+.min-w-150 {
+  min-width: 150px;
+}
+
+.min-w-200 {
+  min-width: 200px;
+}
+
+.min-w-250 {
+  min-width: 250px;
+}
+
+.min-w-300 {
+  min-width: 300px;
+}
+
+.min-w-400 {
+  min-width: 400px;
+}
+
+/* max-width */
+.max-w-50 {
+  max-width: 50px;
+}
+
+.max-w-75 {
+  max-width: 75px;
+}
+
+.max-w-100 {
+  max-width: 100px;
+}
+
+.max-w-150 {
+  max-width: 150px;
+}
+
+.max-w-200 {
+  max-width: 200px;
+}
+
+.max-w-250 {
+  max-width: 250px;
+}
+
+.max-w-300 {
+  max-width: 300px;
+}
+
+.max-w-400 {
+  max-width: 400px;
 }
