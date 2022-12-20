@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css/common.css">
+  <style>
+    body {
+      padding: 36px;
+      background-color: var(--wcag-background-color);
+    }
+  </style>
+  <title>Validate form</title>
+</head>
+
+<body>
+  <form id="m-form" class="m-form">
+    <div class="m-form__title">
+      Đăng ký tài khoản
+    </div>
+    <div class="m-form__form-control">
+      <!-- validated textfield start -->
+      <div class="m-textfield"><label for="" class="--required"> Họ tên </label>
+        <div class="m-input-container">
+          <input rules="required" class="m-input-container__input" type="text" name="fullName"
+            placeholder="Enter fullName">
+          <p class="m-input-container__message"></p>
+          <button type="button" class="m-input-container__icon m-icon" tabindex="-1"></button>
+        </div>
+      </div>
+      <!-- validated textfield end -->
+
+      <!-- validated error textfield start -->
+      <div class="m-textfield"><label for="" class="--required"> Email </label>
+        <div class="m-input-container">
+          <input rules="required|email" class="m-input-container__input" type="text" name="email"
+            placeholder="Enter email">
+          <p class="m-input-container__message"></p>
+          <button type="button" class="m-input-container__icon m-icon" tabindex="-1"></button>
+        </div>
+      </div>
+      <!-- validated error textfield end -->
+
+      <!-- validated error textfield start -->
+      <div class="m-textfield"><label for="" class="--required"> Mật khẩu </label>
+        <div class="m-input-container">
+          <input rules="required|min:6" class="m-input-container__input" type="password" name="password"
+            placeholder="Enter password">
+          <p class="m-input-container__message"></p>
+          <button type="button" class="m-input-container__icon m-icon" tabindex="-1"></button>
+        </div>
+      </div>
+      <!-- validated error textfield end -->
+    </div>
+    <div class="m-form__footer m-button-container">
+      <button type="button" class="m-form-footer__cancel-btn m-btn secondary-btn">Hủy</button>
+      <button type="button" class="m-form-footer__primary-btn m-btn primary-btn" type="submit">Đăng ký</button>
+    </div>
+  </form>
+
+  <script src="../libs/jquery-3.6.1.js"></script>
+  <script src="../js/validator.js"></script>
+  <script>
+    Validator('m-form', {
+      onsubmit: function (payload) {
+        console.log(payload)
+      }
+    })
+  </script>
+</body>
+
+</html>

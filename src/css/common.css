@@ -1,0 +1,175 @@
+@import url(../css/grid-system.css);
+@import url(../css/base/button.css);
+@import url(../css/base/dialog.css);
+@import url(../css/base/dropdownlist.css);
+@import url(../css/base/input.css);
+@import url(../css/base/popup.css);
+@import url(../css/base/table.css);
+@import url(../css/base/form.css);
+@import url(../css/base/contextMenu.css);
+@import url(../css/base/loading.css);
+@import url(../css/base/scrollbar.css);
+@import url(../css/base/notify.css);
+@import url(./animation.css);
+@import url(./icon.css);
+
+@font-face {
+  font-family: notosans-regular;
+  src: url(../assets/fonts/notosans-regular.2cb88a13.woff2);
+}
+
+@font-face {
+  font-family: notosans-italic;
+  src: url(../assets/fonts/notosans-italic.1c1aaac9.woff2);
+}
+
+@font-face {
+  font-family: notosans-semibold;
+  src: url(../assets/fonts/notosans-semibold.df3e6dc4.woff2);
+}
+
+@font-face {
+  font-family: notosans-bold;
+  src: url(../assets/fonts/notosans-bold.3ede5aff.woff2);
+}
+
+:root {
+  --main-color: #01A38A;
+  --main-color-900: #00201B;
+  --main-color-800: #004137;
+  --main-color-700: #016253;
+  --main-color-600: #01836F;
+  --main-color-400: #34B6A2;
+  --main-color-300: #67C8B9;
+  --main-color-200: #99DAD0;
+  --main-color-100: #CCECE7;
+  --main-color-50: #E6F6F3;
+
+  --wcag-title-color: #000000;
+  --wcag-primary-text-color: #212121;
+  --wcag-secondary-text-color: #666666;
+  --wcag-disable-color: #9E9E9E;
+  --wcag-border-color: #E0E0E0;
+  --wcag-background-color: #F0F0F0;
+  --wcag-white-color: #FFF;
+
+  --btn-primary-color: #50B83C;
+  --btn-primary-hover-color: #5DC748;
+  --btn-primary-press-color: #118044;
+  --btn-primary-disabled-color: #7ebe71;
+  --btn-icon-color: #E6F1E4;
+  --btn-danger-color: #E81E1E;
+  --btn-danger-hover-color: #ef4848;
+  --btn-danger-press-color: #bf1a1a;
+  --btn-danger-disabled-color: #eb7272;
+
+  --sidebar-background: #393A3E;
+
+  /* table */
+  --table-row-height: 48px;
+  --table-header-background: #E0E0E0;
+  --table-body-background: #FFFFFF;
+  --table-hover-background: #F5F5F5;
+  --table-header-zIndex: 10;
+
+  /* popup */
+  --popup-body-background: #FFFFFF;
+  --popup-footer-background: #F5F5F5;
+
+  /* input */
+  --validate-message-fontSize: 12px;
+
+  /* context menu */
+  --context-menu-item-height: 30px;
+
+  /* image url */
+
+  --internal-image-url: url(../../assets/img/Sprites.64af8f61.svg)
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: notosans-regular;
+  font-size: 14px;
+}
+
+button {
+  outline: unset;
+}
+
+@media screen and (max-width: 1280px) {
+  html {
+    font-size: 13px;
+  }
+}
+
+
+/* input number */
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* modifier */
+
+.--text-center {
+  text-align: center;
+}
+
+.--text-left {
+  text-align: left;
+}
+
+.--text-right {
+  text-align: right;
+}
+
+.--display-none {
+  display: none;
+}
+
+/* width */
+.w-50 {
+  width: 50px;
+}
+
+.w-75 {
+  width: 75px;
+}
+
+.w-100 {
+  width: 100px;
+}
+
+.w-150 {
+  width: 150px;
+}
+
+.w-200 {
+  width: 200px;
+}
+
+.w-250 {
+  width: 250px;
+}
+
+.w-300 {
+  width: 300px;
+}
+
+.w-400 {
+  width: 400px;
+}

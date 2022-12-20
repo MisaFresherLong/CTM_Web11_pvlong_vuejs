@@ -1,0 +1,157 @@
+:root {
+  --image-url: url(../assets/img/Sprites.64af8f61.svg)
+}
+
+.icon-16 {
+  background-image: var(--image-url);
+  background-repeat: no-repeat;
+  width: 16px;
+  height: 16px;
+}
+
+.icon-18 {
+  background-image: var(--image-url);
+  background-repeat: no-repeat;
+  width: 18px;
+  height: 18px;
+}
+
+.icon-20 {
+  background-image: var(--image-url);
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 20px;
+}
+
+.icon-24 {
+  background-image: var(--image-url);
+  background-repeat: no-repeat;
+  width: 24px;
+  height: 24px;
+}
+
+.icon-32 {
+  background-image: var(--image-url);
+  background-repeat: no-repeat;
+  width: 32px;
+  height: 32px;
+}
+
+/* header */
+.icon-user-thumbnail {
+  background-position: -352px -894px;
+}
+
+
+.icon-angle-down {
+  background-position: -1128px -360px;
+}
+
+.icon-apps {
+  background-position: -1148px -24px;
+}
+
+.icon-menu {
+  background-position: -843px -30px;
+}
+
+.icon-notification {
+  background-position: -787px -30px;
+}
+
+/* side bar */
+.icon-pie {
+  background-position: -31px -1630px;
+}
+
+.icon-money {
+  background-position: -74px -1630px;
+}
+
+.icon-bank {
+  background-position: -118px -1631px;
+}
+
+.icon-bag {
+  background-position: -161px -1632px;
+}
+
+.icon-cart {
+  background-position: -206px -1631px;
+}
+
+.icon-bill {
+  background-position: -249px -1632px;
+}
+
+.icon-warehouse {
+  background-position: -292px -1632px;
+}
+
+.icon-tool {
+  background-position: -336px -1633px;
+}
+
+.icon-fixed-asset {
+  background-position: -379px -1632px;
+}
+
+.icon-tax {
+  background-position: -423px -1633px;
+}
+
+.icon-price {
+  background-position: -467px -1631px;
+}
+
+.icon-book {
+  background-position: -510px -1631px;
+}
+
+.icon-budget {
+  background-position: -590px -1631px;
+}
+
+.icon-report {
+  background-position: -548px -1634px;
+}
+
+.icon-analysis {
+  background-position: -204px -1665px;
+}
+
+/* tool bar */
+.icon-refresh {
+  background-position: -1098px -90px;
+}
+
+/* button */
+.icon-close {
+  background-position: -144px -144px;
+}
+
+.icon-help {
+  background-position: -88px -144px;
+}
+
+.icon-delete {
+  background-position: -462px -312px;
+}
+
+.icon-context-menu {
+  background-position: -896px -360px;
+}
+
+/* drop down */
+.icon-drop-down {
+  background-position: -364px -358px;
+}
+
+/* input */
+.icon-search {
+  background-position: -1041px -89px;
+}
+
+.icon-validated {
+  background-position: -893px -406px;
+}

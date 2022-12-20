@@ -1,0 +1,26 @@
+@import url(../animation.css);
+
+#loading {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  display: none;
+}
+
+.loading-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+}
+
+.loading-icon {
+  background: url('../../assets/loading.svg') no-repeat center;
+  width: 100px;
+  height: 100px;
+  animation: rotate 1s infinite linear;
+}

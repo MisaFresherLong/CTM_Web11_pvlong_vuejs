@@ -1,0 +1,24 @@
+.m-context-menu {
+  padding: 8px 0;
+  background-color: var(--wcag-white-color);
+  width: 200px;
+  border: 1px solid var(--wcag-border-color);
+  border-radius: 4px;
+}
+
+.m-context-menu-item {
+  display: flex;
+  align-items: center;
+  height: var(--context-menu-item-height);
+  cursor: pointer;
+  padding: 0 32px;
+}
+
+.m-context-menu-item:hover {
+  color: var(--main-color-700);
+  background-color: var(--main-color-50)
+}
+
+.m-context-menu-item__text {
+  text-transform: capitalize;
+}

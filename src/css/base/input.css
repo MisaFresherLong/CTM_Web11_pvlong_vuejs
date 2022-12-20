@@ -1,0 +1,181 @@
+:root {
+  --internal-image-url: url(../../assets/img/Sprites.64af8f61.svg)
+}
+
+/* textfield */
+
+.m-textfield+.m-textfield {
+  margin-top: 24px;
+}
+
+.m-textfield {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.m-textfield>label {
+  margin-bottom: 8px;
+}
+
+.m-input-container {
+  width: 100%;
+  position: relative;
+  font-weight: 500;
+}
+
+.m-input-container__input {
+  width: 100%;
+  height: 36px;
+  padding: 0px 12px;
+  border-radius: 4px;
+  border: 1px solid var(--wcag-border-color);
+}
+
+.m-input-container__input::placeholder {
+  color: #999999;
+  font-size: 14px;
+}
+
+.m-input-container__input:hover {
+  cursor: text;
+}
+
+.m-input-container__input:focus {
+  border: 1px solid var(--btn-primary-color);
+  outline: none;
+}
+
+.m-input-container__icon {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  cursor: pointer;
+  border: none;
+}
+
+.m-input-container__message {
+  display: none;
+  position: absolute;
+  bottom: calc(-8px - var(--validate-message-fontSize));
+  left: 0;
+  /* transform: translateY(100%); */
+
+  max-width: 100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* modifier */
+.m-textfield.--search-icon .m-input-container__icon {
+  background-image: var(--internal-image-url);
+  background-position: -1041px -89px;
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 20px;
+}
+
+.m-textfield.--validated .m-input-container__input {
+  border: 1px solid var(--btn-primary-color);
+}
+
+.m-textfield.--validated .m-input-container__icon {
+  background-image: var(--internal-image-url);
+  background-position: -893px -406px;
+  background-repeat: no-repeat;
+  width: 17px;
+  height: 18px;
+}
+
+.m-textfield.--error .m-input-container__input {
+  border: 1px solid var(--btn-danger-color);
+}
+
+.m-textfield.--error .m-input-container__message {
+  display: block;
+  color: var(--btn-danger-color);
+  font-size: var(--validate-message-fontSize);
+  line-height: 14px;
+}
+
+/* textfield required */
+.m-textfield .--required,
+.m-textfield .--not-required {
+  position: relative;
+}
+
+.m-textfield .--required::after {
+  position: absolute;
+  content: "*";
+  margin-left: 8px;
+  color: red;
+  top: 0;
+}
+
+.m-textfield .--not-required::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  content: "tùy chọn";
+  margin-left: 8px;
+  font-style: italic;
+  font-weight: 500;
+  opacity: 0.56;
+}
+
+
+/* radio */
+.m-radio-container {
+  font-weight: 500;
+}
+
+.m-radio-item {
+  display: flex;
+  align-items: center;
+}
+
+.m-radio-item:hover .m-radio-item__input {}
+
+.m-radio-item__input {
+  border: 0px;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--main-color);
+  cursor: pointer;
+}
+
+.m-radio-item__label {
+  margin-left: 8px;
+  cursor: pointer;
+}
+
+/* radio horizontal */
+.m-radio-container--hor {
+  display: flex;
+  height: 36px;
+}
+
+.m-radio-container--hor>.m-radio-item~.m-radio-item {
+  margin-left: 16px;
+}
+
+
+/* date */
+.m-date-container {
+  width: 100%;
+  font-weight: 500;
+}
+
+.m-date-container__input {
+  font-family: notosans-regular;
+}
+
+.m-date-container__input::-webkit-calendar-picker-indicator {
+  background: var(--internal-image-url) no-repeat -128px -312px;
+  /* width: 16px;
+  height: 16px; */
+  opacity: 1;
+  cursor: pointer;
+}

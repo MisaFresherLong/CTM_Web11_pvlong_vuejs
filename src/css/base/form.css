@@ -1,0 +1,30 @@
+.m-form {
+  padding: 32px;
+  width: 450px;
+  background-color: var(--wcag-white-color);
+}
+
+.m-form__title {
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: bold;
+  margin-bottom: 32px;
+}
+
+.m-form__form-control {
+  padding-bottom: 32px;
+}
+
+.m-form__footer {
+  text-align: right;
+}
+
+.m-form__footer>.m-btn~.m-btn {
+  margin-left: 12px;
+}
+
+.m-form-footer__cancel-btn {}
+
+.m-form-footer__secondary-btn {}
+
+.m-form-footer__primary-btn {}
