@@ -18,7 +18,7 @@
             />
             <button
               type="button"
-              class="m-input-container__icon m-icon"
+              class="m-input-container__icon m-icon icon-16 icon-drop-down"
             ></button>
             <div class="m-dropdownlist-data">
               <div class="m-dropdownlist-data__item">

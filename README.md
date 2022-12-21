@@ -1,4 +1,4 @@
-# ctm_web11_pvlong_vuejs
+# GD1_Vue-amis-web11-pvlong
 
 ## Project setup
 

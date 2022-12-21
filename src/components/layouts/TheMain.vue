@@ -143,9 +143,9 @@ export default {
      * Author: PVLong (19/12/2022)
      */
     getEmployeeData(page = null, size = null) {
-      // const offset = this.$resources.Paging.getOffset(page, size);
-      const pageNumber = this.$resources.Paging.getPage(page);
-      const limit = this.$resources.Paging.getLimit(page, size);
+      // const offset = this.$constants.Paging.getOffset(page, size);
+      const pageNumber = this.$constants.Paging.getPage(page);
+      const limit = this.$constants.Paging.getLimit(page, size);
       const params = {
         employeeFilter: this.searchInput,
         pageSize: limit,

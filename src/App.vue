@@ -32,7 +32,7 @@ export default {
     MLoading,
   },
   mounted() {
-    // this.debug(this.$resources);
+    // this.debug(this.$constants);
     // this.debug(this.$enums);
   },
   methods: {},

@@ -5,6 +5,7 @@ const PAGE_INDEX = 1;
  * Hàm kiểm tra và lấy limit
  * @param {*} size
  * @returns limit đã được kiểm tra
+ * Author: PVLong (20/12/2022)
  */
 function getLimit(size = PAGE_SIZE) {
   if (size <= 0) size = PAGE_SIZE;
@@ -15,6 +16,7 @@ function getLimit(size = PAGE_SIZE) {
  * Hàm kiểm tra và lấy page
  * @param {*} size
  * @returns page đã được kiểm tra
+ * Author: PVLong (20/12/2022)
  */
 function getPage(page = PAGE_INDEX) {
   if (page <= 0) page = PAGE_INDEX;
@@ -26,6 +28,7 @@ function getPage(page = PAGE_INDEX) {
  * @param {*} page
  * @param {*} size
  * @returns offset đã được chuyển đổi
+ * Author: PVLong (20/12/2022)
  */
 function getOffset(page = PAGE_INDEX, size = PAGE_SIZE) {
   if (page <= 0) page = 1;

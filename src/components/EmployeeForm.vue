@@ -467,6 +467,7 @@ export default {
     /**
      * Xử lý sự kiện submit form
      * @param {*} payload dữ liệu đã được thu thập
+     * Author: PVLong (19/12/2022)
      */
     handleSubmitForm(payload) {
       // const params = {};
@@ -481,6 +482,7 @@ export default {
     },
     /**
      * Hàm lấy dữ liệu đơn vị
+     * Author: PVLong (19/12/2022)
      */
     getDepartments() {
       if (this.departments) return;
@@ -492,6 +494,7 @@ export default {
     },
     /**
      * Hàm lấy mã nhân viên mới
+     * Author: PVLong (19/12/2022)
      */
     getNewEmployeeCode() {
       if (this.formMode != this.$enums.FormMode.CREATE) return;

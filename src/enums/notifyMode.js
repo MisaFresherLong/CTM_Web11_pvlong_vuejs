@@ -9,6 +9,7 @@ const notifyMode = {
  * Hàm chuyển đổi từ notify enum sang notify class
  * @param {*} mode
  * @returns class để hiển thị
+ * Author: PVLong (20/12/2022)
  */
 function getNotifyClass(mode) {
   switch (mode) {
