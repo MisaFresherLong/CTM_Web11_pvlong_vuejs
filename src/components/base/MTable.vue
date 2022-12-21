@@ -22,12 +22,18 @@
           </tr>
         </thead>
         <tbody class="m-tbody">
-          <tr class="m-tr" v-for="(row, index) in data.Data" :key="index">
-            <td class="m-td m-td-multi">
+          <tr
+            class="m-tr"
+            v-for="(row, index) in data.Data"
+            :key="index"
+            @dblclick="showEmployeeForm(row.EmployeeId)"
+          >
+            <td class="m-td m-td-multi" @dblclick.stop>
               <label class="m-table-checkbox">
                 <m-checkbox />
               </label>
             </td>
+
             <td
               class="m-td"
               :class="col.bodyClass"
@@ -36,10 +42,22 @@
             >
               {{ tableFormatter[col.format](row[col.dataProperty]) }}
             </td>
-            <td class="m-td m-td-widget">
+
+            <td
+              class="m-td m-td-widget"
+              :style="{ 'z-index': data.Data.length - index }"
+              @dblclick.stop
+            >
               <!-- context button start -->
+              <!-- <div
+                class="m-context-menu-btn"
+                :class="{ '--context-on-top': data.Data.length - index < 3}"
+              > -->
               <div class="m-context-menu-btn">
-                <button class="m-context-menu-btn__label editRowBtn">
+                <button
+                  class="m-context-menu-btn__label editRowBtn"
+                  @click="showEmployeeForm(row.EmployeeId)"
+                >
                   Sửa
                 </button>
                 <button
@@ -69,6 +87,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import MCheckbox from "./MCheckbox.vue";
 import MTableFooter from "./MTableFooter.vue";
 export default {
@@ -99,6 +118,20 @@ export default {
         gender: (value) => this.$enums.Gender.getGenderVI(value),
       },
     };
+  },
+  computed: {
+    ...mapActions(["showForm"]),
+  },
+  methods: {
+    /**
+     * Hàm hiển thị form chi tiết nhân viên
+     * @param {*} mode
+     * Author: PVLong (19/12/2022)
+     */
+    showEmployeeForm(employeeId, mode = null) {
+      if (!mode) mode = this.$enums.FormMode.UPDATE;
+      this.$store.dispatch("showForm", { mode, employeeId });
+    },
   },
 };
 </script>

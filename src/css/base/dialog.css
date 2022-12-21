@@ -6,7 +6,7 @@
   height: 100vh;
   background-color: rgb(0, 0, 0, 0.4);
   z-index: 2000;
-  display: none;
+  /* display: none; */
 }
 
 .m-dialog-container {

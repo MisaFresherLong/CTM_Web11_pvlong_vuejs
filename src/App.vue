@@ -5,11 +5,11 @@
     <the-main></the-main>
   </div>
 
-  <employee-form v-if="$store.state.uiModule.isFormShow"></employee-form>
+  <employee-form v-if="uiModule.isFormShow"></employee-form>
 
-  <m-dialog></m-dialog>
-  <m-notify></m-notify>
-  <m-loading></m-loading>
+  <m-dialog v-if="uiModule.isDialogShow"></m-dialog>
+  <m-notify v-if="uiModule.isNotifyShow"></m-notify>
+  <m-loading v-if="uiModule.isLoadingShow"></m-loading>
 </template>
 
 <script>
@@ -20,6 +20,7 @@ import EmployeeForm from "./components/EmployeeForm.vue";
 import MNotify from "./components/base/MNotify.vue";
 import MDialog from "./components/base/MDialog.vue";
 import MLoading from "./components/base/MLoading.vue";
+import { mapState } from "vuex";
 export default {
   name: "App",
   components: {
@@ -30,6 +31,11 @@ export default {
     MNotify,
     MDialog,
     MLoading,
+  },
+  computed: {
+    ...mapState({
+      uiModule: (state) => state.uiModule,
+    }),
   },
   mounted() {
     // this.debug(this.$constants);

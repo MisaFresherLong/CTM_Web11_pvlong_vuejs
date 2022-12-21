@@ -32,7 +32,7 @@
                 placeholder="Tìm kiếm"
                 v-model="searchInput"
                 @change="getEmployeeData()"
-                @keyup.enter="getEmployeeData()"
+                @keydown="getEmployeeData()"
               />
               <button
                 type="button"
@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapState, mapActions } from "vuex";
 import MButton from "../base/MButton.vue";
 import MTable from "../base/MTable.vue";
 export default {
@@ -126,15 +126,19 @@ export default {
           dataProperty: "DepartmentName",
         },
       ],
-      employeeTableData: [],
       searchInput: "",
     };
+  },
+  computed: {
+    ...mapState({
+      employeeTableData: (state) => state.employeeModule.employees,
+    }),
   },
   mounted() {
     this.getEmployeeData();
   },
   methods: {
-    ...mapMutations(["hideForm", "showForm", "setFormMode"]),
+    ...mapActions(["showForm", "fetchEmployees"]),
     /**
      * Hàm lấy dữ liệu nhân viên theo bộ lọc và lưu vào biến employeeTableData
      * @param {string} keyword từ khóa cần tìm kiếm
@@ -146,24 +150,22 @@ export default {
       // const offset = this.$constants.Paging.getOffset(page, size);
       const pageNumber = this.$constants.Paging.getPage(page);
       const limit = this.$constants.Paging.getLimit(page, size);
+      // Chuẩn bị dữ liệu để gọi api
       const params = {
         employeeFilter: this.searchInput,
         pageSize: limit,
         pageNumber: pageNumber,
       };
-      this.axios.get("/api/v1/Employees/filter", { params }).then((res) => {
-        this.debug(res.data);
-        this.employeeTableData = res.data;
-      });
+      this.fetchEmployees(params);
     },
     /**
      * Hàm hiển thị form chi tiết nhân viên
      * @param {*} mode
      * Author: PVLong (19/12/2022)
      */
-    showEmployeeForm(mode = 1) {
-      this.showForm();
-      this.setFormMode(mode);
+    showEmployeeForm(mode = null) {
+      if (!mode) mode = this.$enums.FormMode.CREATE;
+      this.showForm({ mode });
     },
   },
 };

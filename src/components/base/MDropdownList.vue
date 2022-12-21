@@ -7,6 +7,7 @@
       }}</label>
       <div class="m-input-container">
         <input
+          ref="dropdownlistInput"
           :id="schema.name"
           class="m-input-container__input"
           :class="{ 'm-date-container__input': schema.type == 'date' }"
@@ -69,19 +70,39 @@ export default {
     };
   },
   computed: {
+    /**
+     * Kiểm tra dropdown có bắt buộc hay không
+     * Author: PVLong (19/12/2022)
+     */
     isRequired() {
       return this.schema.rules.indexOf("required") > -1;
     },
+    /**
+     * Lấy key dựa vào value
+     * Author: PVLong (19/12/2022)
+     */
     inputKey() {
       const item = this.data?.find((item) => item.value == this.inputValue);
       return item?.key;
     },
   },
   methods: {
+    /**
+     * Xử lý chọn option
+     * @param {*} key
+     * Author: PVLong (19/12/2022)
+     */
     handleChange(key) {
+      // this.debug(this.getValueByKey(key));
+      // this.debug(this.$refs.dropdownlistInput);
       this.inputValue = this.getValueByKey(key);
-      this.log(this.getValueByKey(key));
+      this.$refs.dropdownlistInput.focus();
     },
+    /**
+     * Lấy value theo key
+     * @param {*} key
+     * Author: PVLong (19/12/2022)
+     */
     getValueByKey(key) {
       const item = this.data.find((item) => item.key == key);
       return item.value;

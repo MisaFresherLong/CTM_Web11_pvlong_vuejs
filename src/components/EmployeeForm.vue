@@ -10,7 +10,7 @@
           <div class="m-popup-body__header">
             <div class="m-popup-body__heading">
               <div class="m-popup-body__title employee-form-body__title">
-                Thông tin nhân viên
+                {{ formTitle }}
               </div>
               <!-- horizontal checkbox start-->
               <div class="m-textfield">
@@ -153,10 +153,10 @@
                     :schema="{
                       label: 'Đơn vị',
                       type: 'text',
-                      name: 'DepartmentID',
+                      name: 'DepartmentId',
                       placeholder: 'Chọn đơn vị',
                       rules: 'required',
-                      dataProperty: 'DepartmentID',
+                      dataProperty: 'DepartmentId',
                     }"
                     :data="getDepartmentsKeyValue"
                   ></m-dropdown-list>
@@ -388,12 +388,14 @@
         <div class="m-popup-container__footer m-button-container">
           <div class="m-popup-footer__right-panel m-button-container">
             <button
+              ref="primaryBtn"
               class="m-popup-footer__primary-btn m-btn primary-btn"
               type="submit"
             >
               Cất và thêm
             </button>
             <button
+              ref="secondaryBtn"
               class="m-popup-footer__secondary-btn m-btn secondary-btn"
               type="submit"
             >
@@ -405,6 +407,7 @@
               id="formCancelBtn"
               type="button"
               class="m-popup-footer__cancel-btn m-btn secondary-btn"
+              @click="handleCancelForm"
             >
               Hủy
             </button>
@@ -419,7 +422,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations, mapActions } from "vuex";
 import { Validator } from "../js/validator.js";
 
 import MTextfield from "./base/MTextfield.vue";
@@ -443,13 +446,24 @@ export default {
   },
   computed: {
     ...mapState({
-      formMode: (state) => state.uiModule.formMode,
+      formContent: (state) => state.uiModule.formContent,
       departments: (state) => state.departmentModule.departments,
     }),
+    /**
+     * Tính toán iêu đề form
+     */
+    formTitle() {
+      if (this.formContent.mode == this.$enums.FormMode.CREATE)
+        return "Thêm mới nhân viên";
+      else return "Sửa nhân viên";
+    },
+    /**
+     * Hàm chuyển department sang dạng key-value, phục vụ dropdownlist
+     */
     getDepartmentsKeyValue() {
       if (!this.departments) return null;
       return this.departments.map((department) => ({
-        key: department.DepartmentID,
+        key: department.DepartmentId,
         value: department.DepartmentName,
       }));
     },
@@ -458,12 +472,16 @@ export default {
     this.log("m-form mounted.....................");
     this.getDepartments();
     this.getNewEmployeeCode();
+    /**
+     * Tích hợp thư viện validate
+     */
     Validator("employee-form", {
       onsubmit: this.handleSubmitForm,
     });
   },
   methods: {
     ...mapMutations(["hideForm", "setDepartments"]),
+    ...mapActions(["fetchDepartments", "showDialog", "showNotify"]),
     /**
      * Xử lý sự kiện submit form
      * @param {*} payload dữ liệu đã được thu thập
@@ -472,12 +490,21 @@ export default {
     handleSubmitForm(payload) {
       // const params = {};
       this.axios
-        .post("/api/v1/Employees", payload)
+        .post(this.$constants.API.employees, payload)
         .then((res) => {
           this.debug(res.data);
+          // Hiển thị notify thành công
+          const notifyContent = {
+            mode: this.$enums.NotifyMode.SUCCESS,
+            message: "Thành công",
+            primaryBtnCallback: () => {
+              this.hideForm();
+            },
+          };
+          this.showNotify(notifyContent);
         })
         .catch((err) => {
-          this.log(err);
+          this.axiosNotifyError(err);
         });
     },
     /**
@@ -486,11 +513,7 @@ export default {
      */
     getDepartments() {
       if (this.departments) return;
-      const params = {};
-      this.axios.get("/api/v1/Departments", { params }).then((res) => {
-        this.debug(res.data);
-        this.setDepartments(res.data);
-      });
+      this.fetchDepartments();
     },
     /**
      * Hàm lấy mã nhân viên mới
@@ -500,11 +523,34 @@ export default {
       if (this.formMode != this.$enums.FormMode.CREATE) return;
       const params = {};
       this.axios
-        .get("/api/v1/Employees/NewEmployeeCode", { params })
+        .get(this.$constants.API.newEmployeeCode, { params })
         .then((res) => {
           this.debug(res.data);
           this.formData.employeeCode = res.data;
+        })
+        .catch((err) => {
+          this.error(err.response);
         });
+    },
+    /**
+     * Xử lý đóng form
+     * Author: PVLong (19/12/2022)
+     */
+    handleCancelForm() {
+      const notifyContent = {
+        mode: this.$enums.NotifyMode.QUESTION,
+        message: "Dữ liệu đã bị thay đổi. Bạn có muốn cất không?",
+        primaryBtnTitle: "Cất",
+        isSecondaryBtnShow: true,
+        isCancelBtnShow: true,
+        primaryBtnCallback: () => {
+          this.$refs.primaryBtn.click();
+        },
+        secondaryBtnCallback: () => {
+          this.hideForm();
+        },
+      };
+      this.showNotify(notifyContent);
     },
   },
 };

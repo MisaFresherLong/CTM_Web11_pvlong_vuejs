@@ -10,7 +10,7 @@
   height: 100vh;
   background-color: rgb(0, 0, 0, 0.4);
   z-index: 2000;
-  display: none;
+  /* display: none; */
 }
 
 .m-notify-container {
@@ -81,6 +81,13 @@
 /* info */
 .m-notify.--info .m-notify-header__icon {
   background: var(--internal-image-url) no-repeat -672px -462px;
+  width: 36px;
+  height: 36px;
+}
+
+/* question */
+.m-notify.--question .m-notify-header__icon {
+  background: var(--internal-image-url) no-repeat -832px -462px;
   width: 36px;
   height: 36px;
 }

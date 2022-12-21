@@ -18,6 +18,16 @@ var globalMixin = {
       if (process.env.VUE_APP_ENVIRONMENT == "DEVELOPMENT")
         console.debug(...args);
     },
+    axiosNotifyError(err) {
+      this.error(err.response);
+      // Hiển thị notify lỗi
+      const notifyContent = {
+        mode: this.$enums.NotifyMode.WARNING,
+        message: err.response.data.userMsg,
+      };
+      this.debug(this.$store);
+      this.$store.dispatch("showNotify", notifyContent);
+    },
     // formatter
     dateFormatDMY(value, separate = "/") {
       if (!value) return value;
