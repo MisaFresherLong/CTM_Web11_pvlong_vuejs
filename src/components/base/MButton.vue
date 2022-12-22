@@ -5,6 +5,7 @@
     :class="{
       'primary-btn': isPrimary,
       'secondary-btn': isSecondary,
+      'border-btn': isBorder,
       'link-btn': isLink,
       '--danger': isDanger,
       'm-btn-with-icon': withIcon,
@@ -26,6 +27,12 @@ export default {
       },
     },
     isSecondary: {
+      type: Boolean,
+      default() {
+        return false;
+      },
+    },
+    isBorder: {
       type: Boolean,
       default() {
         return false;

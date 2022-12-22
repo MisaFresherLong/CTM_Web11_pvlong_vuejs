@@ -1,5 +1,11 @@
 <template>
-  <div class="m-dropdownlist">
+  <div
+    class="m-dropdownlist"
+    :class="{
+      '--init-first': isInitFirst,
+      '--toplist': isTopList,
+    }"
+  >
     <!-- textfield with icon start -->
     <div class="m-textfield">
       <label :for="schema.name" :class="{ '--required': isRequired }">{{
@@ -43,7 +49,7 @@
 <script>
 export default {
   name: "MDropdownList",
-  emits: [],
+  emits: ["update:modelValue"],
   props: {
     schema: {
       type: Object,
@@ -63,6 +69,21 @@ export default {
       type: Object,
       required: true,
     },
+    isInitFirst: {
+      type: Boolean,
+      required: false,
+      default() {
+        return false;
+      },
+    },
+    isTopList: {
+      type: Boolean,
+      required: false,
+      default() {
+        return false;
+      },
+    },
+    modelValue: String,
   },
   data() {
     return {
@@ -77,6 +98,20 @@ export default {
     isRequired() {
       return this.schema.rules.indexOf("required") > -1;
     },
+
+    /**
+     * Tính toán value phục vụ v-model
+     * Author: PVLong (19/12/2022)
+     */
+    value: {
+      get() {
+        return this.modelValue;
+      },
+      set(value) {
+        this.$emit("update:modelValue", value);
+      },
+    },
+
     /**
      * Lấy key dựa vào value
      * Author: PVLong (19/12/2022)
@@ -86,6 +121,20 @@ export default {
       return item?.key;
     },
   },
+  watch: {
+    inputValue() {
+      this.$emit("update:modelValue", this.inputKey);
+    },
+    modelValue(value) {
+      this.inputValue = this.getValueByKey(value);
+    },
+  },
+  mounted() {
+    // Khởi tạo giá trị đầu tiên nếu thuộc tính isInitFirst true
+    if (this.isInitFirst) {
+      this.inputValue = this.data[0]?.value;
+    }
+  },
   methods: {
     /**
      * Xử lý chọn option
@@ -94,10 +143,10 @@ export default {
      */
     handleChange(key) {
       // this.debug(this.getValueByKey(key));
-      // this.debug(this.$refs.dropdownlistInput);
       this.inputValue = this.getValueByKey(key);
-      this.$refs.dropdownlistInput.focus();
+      // this.$refs.dropdownlistInput.focus();
     },
+
     /**
      * Lấy value theo key
      * @param {*} key

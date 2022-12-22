@@ -95,6 +95,23 @@
 
 .secondary-btn:hover {}
 
+/* border button */
+
+.border-btn {
+  min-width: 80px;
+  border: 2px solid #000;
+  border-radius: 20px;
+  line-height: unset;
+  color: var(--wcag-primary-text-color);
+}
+
+.border-btn:hover {}
+
+.border-btn:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
 
 /* link button */
 

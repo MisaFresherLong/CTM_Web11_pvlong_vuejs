@@ -1,46 +1,23 @@
 <template>
   <div class="m-table-paging">
-    <div class="m-table-paging__total">Tổng số: <strong>4</strong> bản ghi</div>
+    <div class="m-table-paging__total">
+      Tổng số: <strong>{{ totalRecord }}</strong> bản ghi
+    </div>
     <div class="m-table-pagin__rightPanel">
       <!-- dropdownlist top start -->
-      <div
+      <m-dropdown-list
         id="recordPerPageDropDown"
-        class="m-dropdownlist --init-first --toplist"
-      >
-        <!-- textfield with icon start -->
-        <div class="m-textfield">
-          <div class="m-input-container">
-            <input
-              class="m-input-container__input"
-              type="text"
-              name="input"
-              placeholder="Placeholder"
-            />
-            <button
-              type="button"
-              class="m-input-container__icon m-icon icon-16 icon-drop-down"
-            ></button>
-            <div class="m-dropdownlist-data">
-              <div class="m-dropdownlist-data__item">
-                10 bản ghi trên 1 trang
-              </div>
-              <div class="m-dropdownlist-data__item">
-                20 bản ghi trên 1 trang
-              </div>
-              <div class="m-dropdownlist-data__item">
-                30 bản ghi trên 1 trang
-              </div>
-              <div class="m-dropdownlist-data__item">
-                50 bản ghi trên 1 trang
-              </div>
-              <div class="m-dropdownlist-data__item">
-                100 bản ghi trên 1 trang
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- textfield with icon end -->
-      </div>
+        :schema="{
+          label: '',
+          type: 'text',
+          name: 'recordPerPage',
+          rules: '',
+        }"
+        :data="getRecordPerPageKeyValue"
+        isInitFirst
+        isTopList
+      ></m-dropdown-list>
+      <!-- dropdownlist top end -->
       <!-- dropdownlist top end -->
       <div class="m-table-paging__previousPage">Trước</div>
       <div class="m-table-paging__list-page">
@@ -56,7 +33,33 @@
 </template>
 
 <script>
-export default {};
+import { mapState } from "vuex";
+import MDropdownList from "./MDropdownList.vue";
+export default {
+  name: "MTableFooter",
+  components: {
+    MDropdownList,
+  },
+  data() {
+    return {
+      recordPerPage: [10, 20, 30, 50, 100],
+    };
+  },
+  computed: {
+    ...mapState({
+      totalPage: (state) => state.employeeModule.employees.TotalPage,
+      totalRecord: (state) => state.employeeModule.employees.TotalRecord,
+    }),
+    getRecordPerPageKeyValue() {
+      return this.recordPerPage.map((item) => {
+        return {
+          key: item,
+          value: `${item} bản ghi trên 1 trang`,
+        };
+      });
+    },
+  },
+};
 </script>
 
 <style></style>

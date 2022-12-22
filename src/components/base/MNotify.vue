@@ -38,7 +38,7 @@
             @click="hideNotify"
             v-if="notifyContent.isCancelBtnShow"
           >
-            Hủy
+            {{ notifyContent.cancelBtnTitle }}
           </button>
         </div>
       </div>

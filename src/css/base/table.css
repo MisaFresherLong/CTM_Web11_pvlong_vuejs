@@ -14,6 +14,7 @@ th {
 
 .m-table-container {
   height: var(--table-with-paging-height);
+  position: relative;
 }
 
 .m-body-table {
@@ -21,6 +22,7 @@ th {
   height: var(--table-height);
   border-radius: var(--boder-radius);
   border: 1px solid var(--wcag-border-color);
+  position: relative;
 }
 
 .m-table {
@@ -242,7 +244,7 @@ td:last-child {
 
 /* table loading */
 #table-loading {
-  display: none;
+  /* display: none; */
   position: absolute;
   width: 100%;
   height: 100%;

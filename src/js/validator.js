@@ -68,7 +68,7 @@ export function Validator(formId, options = {}) {
           let checkedInput = formElement.querySelector(
             `[name=${input.name}]:checked`
           );
-          payload[input.name] = checkedInput.value;
+          payload[input.name] = checkedInput?.value;
           break;
         }
         case "checkbox": {

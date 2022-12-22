@@ -17,9 +17,8 @@
       <!-- table toolbar start -->
       <div class="table-toolbar">
         <div class="toolbar__left-panel">
-          <m-button id="deleteManyBtn" isPrimary isDanger withIcon disabled>
-            <div class="btn-icon delete-btn icon-20 icon-delete"></div>
-            Xóa
+          <m-button id="deleteManyBtn" isBorder disabled>
+            Xóa hàng loạt
           </m-button>
         </div>
         <div class="toolbar__right-panel">
@@ -53,6 +52,7 @@
       <m-table
         :schema="employeeTableSchema"
         :data="employeeTableData"
+        @reload="getEmployeeData"
       ></m-table>
       <!-- table end -->
     </div>
@@ -132,7 +132,15 @@ export default {
   computed: {
     ...mapState({
       employeeTableData: (state) => state.employeeModule.employees,
+      isFormShow: (state) => state.uiModule.isFormShow,
     }),
+  },
+  watch: {
+    isFormShow(value) {
+      if (!value) {
+        this.getEmployeeData();
+      }
+    },
   },
   mounted() {
     this.getEmployeeData();

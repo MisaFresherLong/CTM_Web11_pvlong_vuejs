@@ -71,7 +71,7 @@
                       rules: 'required',
                       dataProperty: 'EmployeeCode',
                     }"
-                    :value="formData.employeeCode"
+                    v-model="formData.EmployeeCode"
                   ></m-textfield>
                 </div>
                 <div class="col c-4">
@@ -84,6 +84,7 @@
                       rules: 'required',
                       dataProperty: 'EmployeeName',
                     }"
+                    v-model="formData.EmployeeName"
                   ></m-textfield>
                 </div>
                 <div class="col c-2">
@@ -96,6 +97,7 @@
                       rules: '',
                       dataProperty: 'DateOfBirth',
                     }"
+                    :modelValue="formFormatter.date(formData.DateOfBirth)"
                   ></m-textfield>
                 </div>
                 <div class="col c-4">
@@ -112,6 +114,7 @@
                           value="0"
                           id="m-radio-nam"
                           checked
+                          v-model="formData.Gender"
                         />
                         <label class="m-radio-item__label" for="m-radio-nam"
                           >Nam</label
@@ -125,6 +128,7 @@
                           dataProperty="Gender"
                           value="1"
                           id="m-radio-nu"
+                          v-model="formData.Gender"
                         />
                         <label class="m-radio-item__label" for="m-radio-nu"
                           >Nữ</label
@@ -138,6 +142,7 @@
                           dataProperty="Gender"
                           value="2"
                           id="m-radio-khac"
+                          v-model="formData.Gender"
                         />
                         <label class="m-radio-item__label" for="m-radio-khac"
                           >Khác</label
@@ -159,6 +164,7 @@
                       dataProperty: 'DepartmentId',
                     }"
                     :data="getDepartmentsKeyValue"
+                    v-model="formData.DepartmentId"
                   ></m-dropdown-list>
                   <!-- dropdownlist top end -->
                 </div>
@@ -439,9 +445,7 @@ export default {
           return value;
         },
       },
-      formData: {
-        employeeCode: "",
-      },
+      formData: {},
     };
   },
   computed: {
@@ -449,16 +453,27 @@ export default {
       formContent: (state) => state.uiModule.formContent,
       departments: (state) => state.departmentModule.departments,
     }),
+
+    /**
+     * Tính toán có phải là form thêm mới hay không
+     * Author: PVLong (22/12/2022)
+     */
+    isCreateForm() {
+      return this.formContent.mode == this.$enums.FormMode.CREATE;
+    },
+
     /**
      * Tính toán iêu đề form
+     * Author: PVLong (22/12/2022)
      */
     formTitle() {
-      if (this.formContent.mode == this.$enums.FormMode.CREATE)
-        return "Thêm mới nhân viên";
+      if (this.isCreateForm) return "Thêm mới nhân viên";
       else return "Sửa nhân viên";
     },
+
     /**
      * Hàm chuyển department sang dạng key-value, phục vụ dropdownlist
+     * Author: PVLong (22/12/2022)
      */
     getDepartmentsKeyValue() {
       if (!this.departments) return null;
@@ -471,7 +486,12 @@ export default {
   mounted() {
     this.log("m-form mounted.....................");
     this.getDepartments();
-    this.getNewEmployeeCode();
+    if (this.isCreateForm) {
+      this.getNewEmployeeCode();
+    } else {
+      this.getCurrentEmployee();
+    }
+
     /**
      * Tích hợp thư viện validate
      */
@@ -480,33 +500,62 @@ export default {
     });
   },
   methods: {
-    ...mapMutations(["hideForm", "setDepartments"]),
+    ...mapMutations([
+      "hideForm",
+      "setDepartments",
+      "showLoading",
+      "hideLoading",
+    ]),
     ...mapActions(["fetchDepartments", "showDialog", "showNotify"]),
+
     /**
      * Xử lý sự kiện submit form
      * @param {*} payload dữ liệu đã được thu thập
      * Author: PVLong (19/12/2022)
      */
     handleSubmitForm(payload) {
-      // const params = {};
-      this.axios
-        .post(this.$constants.API.employees, payload)
-        .then((res) => {
-          this.debug(res.data);
-          // Hiển thị notify thành công
-          const notifyContent = {
-            mode: this.$enums.NotifyMode.SUCCESS,
-            message: "Thành công",
-            primaryBtnCallback: () => {
-              this.hideForm();
-            },
-          };
-          this.showNotify(notifyContent);
-        })
-        .catch((err) => {
-          this.axiosNotifyError(err);
-        });
+      if (this.isCreateForm) {
+        this.axios
+          .post(this.$constants.API.employees, payload)
+          .then((res) => {
+            this.debug(res.data);
+            // Hiển thị notify thành công
+            const notifyContent = {
+              mode: this.$enums.NotifyMode.SUCCESS,
+              message: "Thành công",
+              primaryBtnCallback: () => {
+                this.hideForm();
+              },
+            };
+            this.showNotify(notifyContent);
+          })
+          .catch((err) => {
+            this.axiosNotifyError(err);
+          });
+      } else {
+        this.axios
+          .put(
+            this.$constants.API.employees + `/${this.formContent.employeeId}`,
+            payload
+          )
+          .then((res) => {
+            this.debug(res.data);
+            // Hiển thị notify thành công
+            const notifyContent = {
+              mode: this.$enums.NotifyMode.SUCCESS,
+              message: "Thành công",
+              primaryBtnCallback: () => {
+                this.hideForm();
+              },
+            };
+            this.showNotify(notifyContent);
+          })
+          .catch((err) => {
+            this.axiosNotifyError(err);
+          });
+      }
     },
+
     /**
      * Hàm lấy dữ liệu đơn vị
      * Author: PVLong (19/12/2022)
@@ -515,23 +564,48 @@ export default {
       if (this.departments) return;
       this.fetchDepartments();
     },
+
     /**
      * Hàm lấy mã nhân viên mới
      * Author: PVLong (19/12/2022)
      */
     getNewEmployeeCode() {
-      if (this.formMode != this.$enums.FormMode.CREATE) return;
       const params = {};
       this.axios
         .get(this.$constants.API.newEmployeeCode, { params })
         .then((res) => {
           this.debug(res.data);
-          this.formData.employeeCode = res.data;
+          this.formData.EmployeeCode = res.data;
         })
         .catch((err) => {
           this.error(err.response);
         });
     },
+
+    /**
+     * Hàm lấy dữ liệu nhân viên
+     * Author: PVLong (19/12/2022)
+     */
+    getCurrentEmployee() {
+      this.showLoading();
+      const params = {};
+      this.axios
+        .get(
+          this.$constants.API.employees + `/${this.formContent.employeeId}`,
+          { params }
+        )
+        .then((res) => {
+          // this.debug(res.data);
+          this.formData = res.data;
+        })
+        .catch((err) => {
+          this.error(err.response);
+        })
+        .finally(() => {
+          this.hideLoading();
+        });
+    },
+
     /**
      * Xử lý đóng form
      * Author: PVLong (19/12/2022)

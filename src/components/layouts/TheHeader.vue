@@ -24,8 +24,30 @@
 </template>
 
 <script>
+import $ from "jquery";
 export default {
   name: "TheHeader",
+  mounted() {
+    this.initEvent();
+  },
+  methods: {
+    /**
+     * Khởi tạo sự kiện
+     * Author: PVLong (19/12/2022)
+     */
+    initEvent() {
+      // Xử lý sự kiện đóng mở sidebar
+      $("#header__menu-icon").click(this.toggleSidebar);
+    },
+
+    /**
+     * Xử lý sự kiện đóng mở sidebar
+     * Author: PVLong (19/12/2022)
+     */
+    toggleSidebar() {
+      $("#employee-page").toggleClass("--sidebar-close");
+    },
+  },
 };
 </script>
 

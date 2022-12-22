@@ -14,8 +14,7 @@
         :placeholder="schema.placeholder"
         :dataProperty="schema.dataProperty || schema.name"
         :rules="schema.rules ? schema.rules : ''"
-        :value="value"
-        @input="handleInput()"
+        v-model="value"
       />
       <p class="m-input-container__message"></p>
       <button
@@ -31,7 +30,7 @@
 <script>
 export default {
   name: "MTextfield",
-  emits: ["input"],
+  emits: ["update:modelValue"],
   props: {
     schema: {
       type: Object,
@@ -47,10 +46,7 @@ export default {
         };
       },
     },
-    value: {
-      type: String,
-      // required: true
-    },
+    modelValue: String,
   },
   data() {
     return {
@@ -58,18 +54,31 @@ export default {
     };
   },
   computed: {
+    /**
+     * Kiểm tra dropdown có bắt buộc hay không
+     * Author: PVLong (19/12/2022)
+     */
     isRequired() {
       return this.schema.rules.indexOf("required") > -1;
+    },
+
+    /**
+     * Tính toán value phục vụ v-model
+     * Author: PVLong (19/12/2022)
+     */
+    value: {
+      get() {
+        return this.modelValue;
+      },
+      set(value) {
+        this.$emit("update:modelValue", value);
+      },
     },
   },
   mounted() {
     // this.log("m-textfield mounted.....................");
   },
-  methods: {
-    handleInput() {
-      this.$emit("input", this.inputValue);
-    },
-  },
+  methods: {},
 };
 </script>
 

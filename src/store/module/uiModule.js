@@ -8,8 +8,9 @@ const defaultNotifyContent = {
   isPrimaryBtnShow: true,
   isSecondaryBtnShow: false,
   isCancelBtnShow: false,
-  primaryBtnTitle: "Có",
+  primaryBtnTitle: "Đồng ý",
   secondaryBtnTitle: "Không",
+  cancelBtnTitle: "Hủy",
   primaryBtnCallback: function () {},
   secondaryBtnCallback: function () {},
 };
@@ -49,18 +50,25 @@ export const uiModule = {
     },
   },
   mutations: {
-    hideLoading(state) {
-      state.isLoadingShow = false;
-    },
+    // loading
     showLoading(state) {
       state.isLoadingShow = true;
     },
-    hideForm(state) {
-      state.isFormShow = false;
+    hideLoading(state) {
+      state.isLoadingShow = false;
     },
+    // form
     showForm(state) {
       state.isFormShow = true;
     },
+    hideForm(state) {
+      state.isFormShow = false;
+      state.formContent = { ...defaultFormContent };
+    },
+    setFormContent(state, payload) {
+      state.formContent = { ...defaultFormContent, ...payload };
+    },
+    // notify
     showNotify(state) {
       state.isNotifyShow = true;
     },
@@ -68,18 +76,16 @@ export const uiModule = {
       state.isNotifyShow = false;
       state.notifyContent = { ...defaultNotifyContent };
     },
+    setNotifyContent(state, payload) {
+      state.notifyContent = { ...defaultNotifyContent, ...payload };
+    },
+    // dialog
     showDialog(state) {
       state.isDialogShow = true;
     },
     hideDialog(state) {
       state.isDialogShow = false;
       state.dialogContent = { ...defaultDialogContent };
-    },
-    setFormContent(state, payload) {
-      state.formContent = { ...defaultFormContent, ...payload };
-    },
-    setNotifyContent(state, payload) {
-      state.notifyContent = { ...defaultNotifyContent, ...payload };
     },
     setDialogContent(state, payload) {
       state.dialogContent = { ...defaultDialogContent, ...payload };

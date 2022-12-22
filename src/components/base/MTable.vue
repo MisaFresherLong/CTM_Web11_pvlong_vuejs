@@ -1,6 +1,11 @@
 <template>
   <div class="m-table-container">
     <div class="m-body-table">
+      <div id="table-loading" v-show="isLoading">
+        <div class="loading-container">
+          <div class="loading-icon"></div>
+        </div>
+      </div>
       <table class="m-table">
         <thead class="m-thead">
           <tr class="m-tr">
@@ -21,7 +26,7 @@
             <th class="m-th w-150">Chức năng</th>
           </tr>
         </thead>
-        <tbody class="m-tbody">
+        <tbody class="m-tbody" v-show="!isLoading">
           <tr
             class="m-tr"
             v-for="(row, index) in data.Data"
@@ -67,7 +72,10 @@
                     <div class="m-context-menu-item">
                       <div class="m-context-menu-item__text">Nhân bản</div>
                     </div>
-                    <div class="m-context-menu-item deleteRowBtn">
+                    <div
+                      class="m-context-menu-item deleteRowBtn"
+                      @click="openConfirmDeleteNotify(row)"
+                    >
                       <div class="m-context-menu-item__text">Xóa</div>
                     </div>
                     <div class="m-context-menu-item">
@@ -87,12 +95,13 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 import MCheckbox from "./MCheckbox.vue";
 import MTableFooter from "./MTableFooter.vue";
 export default {
   name: "MTable",
   components: { MCheckbox, MTableFooter },
+  emits: ["reload"],
   props: {
     schema: {
       type: Object,
@@ -117,12 +126,21 @@ export default {
         dateYMD: (value) => this.dateFormatYMD(value),
         gender: (value) => this.$enums.Gender.getGenderVI(value),
       },
+      isLoading: false,
     };
   },
   computed: {
-    ...mapActions(["showForm"]),
+    ...mapState({}),
+  },
+  watch: {
+    "$store.state.employeeModule.isFetching"(value) {
+      this.isLoading = value;
+    },
   },
   methods: {
+    ...mapMutations(["hideNotify"]),
+    ...mapActions(["showForm", "showNotify"]),
+
     /**
      * Hàm hiển thị form chi tiết nhân viên
      * @param {*} mode
@@ -130,7 +148,47 @@ export default {
      */
     showEmployeeForm(employeeId, mode = null) {
       if (!mode) mode = this.$enums.FormMode.UPDATE;
-      this.$store.dispatch("showForm", { mode, employeeId });
+      this.showForm({ mode, employeeId });
+    },
+
+    /**
+     * Mở notify xác nhận xóa
+     * @param {*} row dữ liệu của dòng
+     * Author: PVLong (20/12/2022)
+     */
+    openConfirmDeleteNotify(row) {
+      const notifyContent = {
+        mode: this.$enums.NotifyMode.WARNING,
+        message: `Bạn có thực sự muốn xóa Nhân viên <${row.EmployeeCode}> không?`,
+        primaryBtnTitle: "Xóa",
+        cancelBtnTitle: "Không",
+        isCancelBtnShow: true,
+        primaryBtnCallback: () => {
+          this.deleteRow(row.EmployeeId);
+        },
+      };
+      this.showNotify(notifyContent);
+    },
+
+    /**
+     * Hàm thực hiện xóa dòng
+     * @param {*} id id của bản ghi cần xóa
+     * Author: PVLong (20/12/2022)
+     */
+    deleteRow(id) {
+      this.debug("delete", id);
+      this.axios
+        .delete(this.$constants.API.employees + `/${id}`)
+        .then((res) => {
+          this.debug(res.data);
+          this.hideNotify();
+        })
+        .catch((err) => {
+          this.axiosNotifyError(err);
+        })
+        .finally(() => {
+          this.$emit("reload");
+        });
     },
   },
 };
