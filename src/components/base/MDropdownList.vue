@@ -22,6 +22,7 @@
           :placeholder="schema.placeholder"
           :dataProperty="schema.dataProperty || schema.name"
           :rules="schema.rules ? schema.rules : ''"
+          :disabled="schema.disabled ? schema.disabled : false"
           v-model="inputValue"
           :data-item-key="inputKey"
         />
@@ -155,7 +156,7 @@ export default {
     getValueByKey(key) {
       if (!this.data) return "";
       const item = this.data.find((item) => item.key == key);
-      return item.value;
+      return item?.value;
     },
   },
 };

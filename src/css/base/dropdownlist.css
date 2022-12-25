@@ -56,7 +56,7 @@
 }
 
 .m-dropdownlist-data__item:hover {
-  background-color: var(--main-color-300);
+  background-color: var(--main-color-100);
   cursor: pointer;
 }
 

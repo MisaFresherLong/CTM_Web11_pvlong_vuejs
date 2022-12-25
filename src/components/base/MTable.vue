@@ -99,7 +99,10 @@
         <!-- tbody end -->
       </table>
     </div>
-    <m-table-footer></m-table-footer>
+    <m-table-footer
+      v-model:pageIndex="localPageIndex"
+      v-model:pageSize="localPageSize"
+    ></m-table-footer>
   </div>
 </template>
 
@@ -111,7 +114,12 @@ import MTableFooter from "./MTableFooter.vue";
 export default {
   name: "MTable",
   components: { MCheckbox, MTableFooter },
-  emits: ["reload", "update:checkedRowIds"],
+  emits: [
+    "reload",
+    "update:checkedRowIds",
+    "update:pageIndex",
+    "update:pageSize",
+  ],
   props: {
     schema: {
       type: Object,
@@ -128,6 +136,8 @@ export default {
       },
     },
     checkedRowIds: Object,
+    pageIndex: String,
+    pageSize: String,
   },
   data() {
     return {
@@ -142,15 +152,47 @@ export default {
   },
   computed: {
     ...mapState({}),
+
+    /**
+     * Tính toán pageIndex phục vụ v-model
+     * Author: PVLong (24/12/2022)
+     */
+    localPageIndex: {
+      get() {
+        return this.pageIndex;
+      },
+      set(value) {
+        this.$emit("update:pageIndex", value);
+      },
+    },
+
+    /**
+     * Tính toán pageSize phục vụ v-model
+     * Author: PVLong (24/12/2022)
+     */
+    localPageSize: {
+      get() {
+        return this.pageSize;
+      },
+      set(value) {
+        this.$emit("update:pageSize", value);
+      },
+    },
   },
   watch: {
     "$store.state.employeeModule.isFetching"(value) {
       this.isLoading = value;
     },
+    data: {
+      handler() {
+        this.resetCheckboxs();
+      },
+      deep: true,
+    },
   },
   methods: {
     ...mapMutations(["hideNotify"]),
-    ...mapActions(["showForm", "showNotify"]),
+    ...mapActions(["showForm", "showNotify", "addToastMessage"]),
 
     /**
      * Hàm hiển thị form chi tiết nhân viên
@@ -201,11 +243,21 @@ export default {
     collectRowIds() {
       let rowIds = [];
       $("tbody .m-input-checkbox:checked").each(function () {
-        const dataKey = $(this).parents(".m-tr").data("key");
-        const dataCode = $(this).parents(".m-tr").data("code");
+        const dataKey = $(this).parents(".m-tr").attr("data-key");
+        const dataCode = $(this).parents(".m-tr").attr("data-code");
         rowIds.push({ EmployeeId: dataKey, EmployeeCode: dataCode });
       });
       this.$emit("update:checkedRowIds", rowIds);
+    },
+
+    /**
+     * Gán tất cả checkbox về false
+     */
+    resetCheckboxs() {
+      $(".m-table .m-input-checkbox:checked").each(function () {
+        $(this).prop("checked", false);
+      });
+      this.$emit("update:checkedRowIds", []);
     },
 
     /**
@@ -221,7 +273,7 @@ export default {
         cancelBtnTitle: "Không",
         isCancelBtnShow: true,
         primaryBtnCallback: () => {
-          this.deleteRow(row.EmployeeId);
+          this.deleteRow(row.EmployeeId, row.EmployeeCode);
         },
       };
       this.showNotify(notifyContent);
@@ -230,15 +282,25 @@ export default {
     /**
      * Hàm thực hiện xóa dòng
      * @param {*} id id của bản ghi cần xóa
+     * @param {*} id id của bản ghi cần xóa
      * Author: PVLong (20/12/2022)
      */
-    deleteRow(id) {
+    deleteRow(id, code) {
       this.debug("delete", id);
       this.axios
         .delete(this.$constants.API.employees + `/${id}`)
         .then((res) => {
+          // Ẩn notify
           this.debug(res.data);
           this.hideNotify();
+
+          // Hiển thị toast message thành công
+          const content = {
+            mode: this.$enums.ToastMessageMode.SUCCESS,
+            message: "Thành công",
+            body: `Xóa nhân viên <${code}> thành công.`,
+          };
+          this.addToastMessage(content);
         })
         .catch((err) => {
           this.axiosNotifyError(err);

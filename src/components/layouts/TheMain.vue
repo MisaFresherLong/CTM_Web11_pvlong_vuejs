@@ -59,6 +59,8 @@
         :data="employeeTableData"
         @reload="getEmployeeData"
         v-model:checkedRowIds="employeeIds"
+        v-model:pageIndex="paging.pageIndex"
+        v-model:pageSize="paging.pageSize"
       ></m-table>
       <!-- table end -->
     </div>
@@ -66,7 +68,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapMutations, mapState, mapActions } from "vuex";
 import MButton from "../base/MButton.vue";
 import MTable from "../base/MTable.vue";
 export default {
@@ -134,6 +136,10 @@ export default {
       ],
       searchInput: "",
       employeeIds: [],
+      paging: {
+        pageIndex: "1",
+        pageSize: "10",
+      },
     };
   },
   computed: {
@@ -143,33 +149,45 @@ export default {
     }),
   },
   watch: {
+    // Reload dữ liệu khi đóng form
     isFormShow(value) {
       if (!value) {
         this.getEmployeeData();
       }
+    },
+
+    // Reload dữ liệu khi paging thay đổi
+    paging: {
+      handler() {
+        this.getEmployeeData();
+      },
+      deep: true,
     },
   },
   mounted() {
     this.getEmployeeData();
   },
   methods: {
-    ...mapActions(["showForm", "fetchEmployees", "showNotify"]),
+    ...mapMutations(["hideNotify"]),
+    ...mapActions([
+      "showForm",
+      "fetchEmployees",
+      "showNotify",
+      "addToastMessage",
+    ]),
     /**
      * Hàm lấy dữ liệu nhân viên theo bộ lọc và lưu vào biến employeeTableData
-     * @param {string} keyword từ khóa cần tìm kiếm
-     * @param {number} page số trang
-     * @param {number} size số bản ghi cần lấy
      * Author: PVLong (19/12/2022)
      */
-    getEmployeeData(page = null, size = null) {
+    getEmployeeData() {
       // const offset = this.$constants.Paging.getOffset(page, size);
-      const pageNumber = this.$constants.Paging.getPage(page);
-      const limit = this.$constants.Paging.getLimit(page, size);
+      const pageIndex = this.$constants.Paging.getPage(this.paging.pageIndex);
+      const limit = this.$constants.Paging.getLimit(this.paging.pageSize);
       // Chuẩn bị dữ liệu để gọi api
       const params = {
         employeeFilter: this.searchInput,
         pageSize: limit,
-        pageNumber: pageNumber,
+        pageNumber: pageIndex,
       };
       this.fetchEmployees(params);
     },
@@ -222,6 +240,14 @@ export default {
       }
       this.getEmployeeData();
       this.hideNotify();
+
+      // Hiển thị toast message thành công
+      const content = {
+        mode: this.$enums.ToastMessageMode.SUCCESS,
+        message: "Thành công",
+        body: `Xóa nhiều nhân viên thành công.`,
+      };
+      this.addToastMessage(content);
     },
   },
 };

@@ -8,6 +8,7 @@ const PAGE_INDEX = 1;
  * Author: PVLong (20/12/2022)
  */
 function getLimit(size = PAGE_SIZE) {
+  if (typeof size == "string") size = parseInt(size);
   if (size <= 0) size = PAGE_SIZE;
   return size;
 }
@@ -19,6 +20,7 @@ function getLimit(size = PAGE_SIZE) {
  * Author: PVLong (20/12/2022)
  */
 function getPage(page = PAGE_INDEX) {
+  if (typeof page == "string") page = parseInt(page);
   if (page <= 0) page = PAGE_INDEX;
   return page;
 }
@@ -31,6 +33,9 @@ function getPage(page = PAGE_INDEX) {
  * Author: PVLong (20/12/2022)
  */
 function getOffset(page = PAGE_INDEX, size = PAGE_SIZE) {
+  if (typeof page == "string") page = parseInt(page);
+  if (typeof size == "string") size = parseInt(size);
+
   if (page <= 0) page = 1;
   return (page - 1) * getLimit(size);
 }
