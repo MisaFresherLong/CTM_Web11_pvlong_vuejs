@@ -476,7 +476,7 @@ export default {
      * Author: PVLong (22/12/2022)
      */
     getDepartmentsKeyValue() {
-      if (!this.departments) return null;
+      if (!this.departments) return [];
       return this.departments.map((department) => ({
         key: department.DepartmentId,
         value: department.DepartmentName,
@@ -506,7 +506,12 @@ export default {
       "showLoading",
       "hideLoading",
     ]),
-    ...mapActions(["fetchDepartments", "showDialog", "showNotify"]),
+    ...mapActions([
+      "fetchDepartments",
+      "showDialog",
+      "showNotify",
+      "addToastMessage",
+    ]),
 
     /**
      * Xử lý sự kiện submit form
@@ -520,14 +525,14 @@ export default {
           .then((res) => {
             this.debug(res.data);
             // Hiển thị notify thành công
-            const notifyContent = {
-              mode: this.$enums.NotifyMode.SUCCESS,
+            const content = {
+              mode: this.$enums.ToastMessageMode.SUCCESS,
               message: "Thành công",
-              primaryBtnCallback: () => {
-                this.hideForm();
-              },
+              body: "Thêm nhân viên thành công.",
             };
-            this.showNotify(notifyContent);
+            this.addToastMessage(content);
+            // Xử lý đóng form
+            this.hideForm();
           })
           .catch((err) => {
             this.axiosNotifyError(err);
@@ -541,14 +546,14 @@ export default {
           .then((res) => {
             this.debug(res.data);
             // Hiển thị notify thành công
-            const notifyContent = {
-              mode: this.$enums.NotifyMode.SUCCESS,
+            const content = {
+              mode: this.$enums.ToastMessageMode.SUCCESS,
               message: "Thành công",
-              primaryBtnCallback: () => {
-                this.hideForm();
-              },
+              body: "Sửa nhân viên thành công.",
             };
-            this.showNotify(notifyContent);
+            this.addToastMessage(content);
+            // Xử lý đóng form
+            this.hideForm();
           })
           .catch((err) => {
             this.axiosNotifyError(err);

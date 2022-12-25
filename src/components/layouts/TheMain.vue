@@ -17,7 +17,12 @@
       <!-- table toolbar start -->
       <div class="table-toolbar">
         <div class="toolbar__left-panel">
-          <m-button id="deleteManyBtn" isBorder disabled>
+          <m-button
+            id="deleteManyBtn"
+            isBorder
+            :disabled="employeeIds.length == 0"
+            @click="openConfirmDeleteNotify"
+          >
             Xóa hàng loạt
           </m-button>
         </div>
@@ -31,7 +36,7 @@
                 placeholder="Tìm kiếm"
                 v-model="searchInput"
                 @change="getEmployeeData()"
-                @keydown="getEmployeeData()"
+                @keyup="getEmployeeData()"
               />
               <button
                 type="button"
@@ -53,6 +58,7 @@
         :schema="employeeTableSchema"
         :data="employeeTableData"
         @reload="getEmployeeData"
+        v-model:checkedRowIds="employeeIds"
       ></m-table>
       <!-- table end -->
     </div>
@@ -127,6 +133,7 @@ export default {
         },
       ],
       searchInput: "",
+      employeeIds: [],
     };
   },
   computed: {
@@ -146,7 +153,7 @@ export default {
     this.getEmployeeData();
   },
   methods: {
-    ...mapActions(["showForm", "fetchEmployees"]),
+    ...mapActions(["showForm", "fetchEmployees", "showNotify"]),
     /**
      * Hàm lấy dữ liệu nhân viên theo bộ lọc và lưu vào biến employeeTableData
      * @param {string} keyword từ khóa cần tìm kiếm
@@ -174,6 +181,47 @@ export default {
     showEmployeeForm(mode = null) {
       if (!mode) mode = this.$enums.FormMode.CREATE;
       this.showForm({ mode });
+    },
+
+    /**
+     * Mở notify xác nhận xóa
+     * Author: PVLong (20/12/2022)
+     */
+    openConfirmDeleteNotify() {
+      const idsMessage = this.employeeIds.reduce((total, current) => {
+        return total + ` <${current.EmployeeCode}> `;
+      }, "");
+      const notifyContent = {
+        mode: this.$enums.NotifyMode.WARNING,
+        message: `Bạn có thực sự muốn xóa Nhân viên ${idsMessage} không?`,
+        primaryBtnTitle: "Xóa",
+        cancelBtnTitle: "Không",
+        isCancelBtnShow: true,
+        primaryBtnCallback: () => {
+          this.deleteRows();
+        },
+      };
+      this.showNotify(notifyContent);
+    },
+
+    /**
+     * Hàm thực hiện các xóa dòng
+     * Author: PVLong (20/12/2022)
+     */
+    async deleteRows() {
+      this.debug("delete", this.employeeIds);
+      for (let row of this.employeeIds) {
+        await this.axios
+          .delete(this.$constants.API.employees + `/${row.EmployeeId}`)
+          .then((res) => {
+            this.debug(res.data);
+          })
+          .catch((err) => {
+            this.axiosNotifyError(err);
+          });
+      }
+      this.getEmployeeData();
+      this.hideNotify();
     },
   },
 };

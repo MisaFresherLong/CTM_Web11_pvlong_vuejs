@@ -22,6 +22,15 @@ const defaultDialogContent = {
   primaryBtnCallback: function () {},
   secondaryBtnCallback: function () {},
 };
+const defaultToastMessageContent = {
+  mode: 0,
+  title: "",
+  body: "",
+  actionBtnTitle: "Hoàn tác",
+  isActionBtnShow: false,
+  isCloseBtnShow: true,
+  actionBtnCallback: function () {},
+};
 
 export const uiModule = {
   state() {
@@ -33,6 +42,7 @@ export const uiModule = {
       notifyContent: { ...defaultNotifyContent },
       isDialogShow: false,
       dialogContent: { ...defaultDialogContent },
+      toastMessages: [],
     };
   },
   actions: {
@@ -47,6 +57,15 @@ export const uiModule = {
     showDialog({ commit }, dialogContent) {
       commit("showDialog");
       commit("setDialogContent", dialogContent);
+    },
+    addToastMessage({ state }, toastMessageContent) {
+      state.toastMessages.push({
+        ...defaultToastMessageContent,
+        ...toastMessageContent,
+      });
+    },
+    removeToastMessage({ state }, toastMessageIndex = 0) {
+      state.toastMessages.splice(toastMessageIndex, 1);
     },
   },
   mutations: {

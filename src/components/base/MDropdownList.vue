@@ -153,6 +153,7 @@ export default {
      * Author: PVLong (19/12/2022)
      */
     getValueByKey(key) {
+      if (!this.data) return "";
       const item = this.data.find((item) => item.key == key);
       return item.value;
     },

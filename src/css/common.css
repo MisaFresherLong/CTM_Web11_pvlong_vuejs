@@ -1,5 +1,6 @@
 @import url(./grid-system.css);
 @import url(./icon.css);
+@import url(./animation.css);
 @import url(../css/base/button.css);
 @import url(../css/base/dialog.css);
 @import url(../css/base/dropdownlist.css);
@@ -11,7 +12,7 @@
 @import url(../css/base/loading.css);
 @import url(../css/base/scrollbar.css);
 @import url(../css/base/notify.css);
-@import url(./animation.css);
+@import url(../css/base/toast-message.css);
 
 @font-face {
   font-family: notosans-regular;
@@ -64,6 +65,12 @@
   --btn-danger-disabled-color: #eb7272;
 
   --sidebar-background: #393A3E;
+
+  /* toast */
+  --toast-success-color: #50B83C;
+  --toast-warning-color: #F49342;
+  --toast-error-color: #DE3618;
+  --toast-info-color: #009EEB;
 
   /* table */
   --table-row-height: 48px;

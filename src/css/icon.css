@@ -2,6 +2,13 @@
   --image-url: url(../assets/img/Sprites.64af8f61.svg)
 }
 
+.icon-12 {
+  background-image: var(--image-url);
+  background-repeat: no-repeat;
+  width: 12px;
+  height: 12px;
+}
+
 .m-icon-14 {
   width: 14px;
   height: 14px;
@@ -160,6 +167,14 @@
 /* button */
 .icon-close {
   background-position: -144px -144px;
+}
+
+.icon-close-md {
+  background-position: -1178px -362px;
+}
+
+.icon-close-sm {
+  background-position: -84px -316px;
 }
 
 .icon-help {

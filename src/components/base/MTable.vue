@@ -7,11 +7,12 @@
         </div>
       </div>
       <table class="m-table">
+        <!-- thead start -->
         <thead class="m-thead">
           <tr class="m-tr">
             <th class="m-th m-checkAll">
               <label class="m-table-checkbox">
-                <m-checkbox />
+                <m-checkbox @update:modelValue="handleHeaderCheckboxUpdate" />
               </label>
             </th>
             <th
@@ -26,19 +27,25 @@
             <th class="m-th w-150">Chức năng</th>
           </tr>
         </thead>
+        <!-- thead end -->
+        <!-- tbody start -->
         <tbody class="m-tbody" v-show="!isLoading">
           <tr
             class="m-tr"
             v-for="(row, index) in data.Data"
             :key="index"
+            :data-key="row.EmployeeId"
+            :data-code="row.EmployeeCode"
             @dblclick="showEmployeeForm(row.EmployeeId)"
           >
+            <!-- row checkbox -->
             <td class="m-td m-td-multi" @dblclick.stop>
               <label class="m-table-checkbox">
-                <m-checkbox />
+                <m-checkbox @update:modelValue="handleRowCheckboxUpdate" />
               </label>
             </td>
 
+            <!-- row middle content -->
             <td
               class="m-td"
               :class="col.bodyClass"
@@ -48,6 +55,7 @@
               {{ tableFormatter[col.format](row[col.dataProperty]) }}
             </td>
 
+            <!-- row context menu -->
             <td
               class="m-td m-td-widget"
               :style="{ 'z-index': data.Data.length - index }"
@@ -88,6 +96,7 @@
             </td>
           </tr>
         </tbody>
+        <!-- tbody end -->
       </table>
     </div>
     <m-table-footer></m-table-footer>
@@ -95,13 +104,14 @@
 </template>
 
 <script>
+import $ from "jquery";
 import { mapActions, mapMutations, mapState } from "vuex";
 import MCheckbox from "./MCheckbox.vue";
 import MTableFooter from "./MTableFooter.vue";
 export default {
   name: "MTable",
   components: { MCheckbox, MTableFooter },
-  emits: ["reload"],
+  emits: ["reload", "update:checkedRowIds"],
   props: {
     schema: {
       type: Object,
@@ -117,6 +127,7 @@ export default {
         };
       },
     },
+    checkedRowIds: Object,
   },
   data() {
     return {
@@ -149,6 +160,52 @@ export default {
     showEmployeeForm(employeeId, mode = null) {
       if (!mode) mode = this.$enums.FormMode.UPDATE;
       this.showForm({ mode, employeeId });
+    },
+
+    /**
+     * Xử lý checkbox check nhiều
+     * Author: PVLong (22/12/2022)
+     */
+    handleHeaderCheckboxUpdate(value) {
+      // this.debug(value);
+      $("tbody .m-input-checkbox").each(function () {
+        $(this).prop("checked", value);
+      });
+      this.collectRowIds();
+    },
+
+    /**
+     * Xử lý checkbox check nhiều
+     * Author: PVLong (22/12/2022)
+     */
+    handleRowCheckboxUpdate(value) {
+      // this.debug(value);
+      this.collectRowIds();
+      if (!value) {
+        $("thead .m-input-checkbox").prop("checked", false);
+        return;
+      }
+      let isAllChecked = true;
+      $("tbody .m-input-checkbox").each(function () {
+        if (!$(this).prop("checked")) {
+          isAllChecked = false;
+          return;
+        }
+      });
+      $("thead .m-input-checkbox").prop("checked", isAllChecked);
+    },
+
+    /**
+     * Thu thập id của các dòng được check
+     */
+    collectRowIds() {
+      let rowIds = [];
+      $("tbody .m-input-checkbox:checked").each(function () {
+        const dataKey = $(this).parents(".m-tr").data("key");
+        const dataCode = $(this).parents(".m-tr").data("code");
+        rowIds.push({ EmployeeId: dataKey, EmployeeCode: dataCode });
+      });
+      this.$emit("update:checkedRowIds", rowIds);
     },
 
     /**

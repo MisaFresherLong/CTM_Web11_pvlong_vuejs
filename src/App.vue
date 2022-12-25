@@ -10,6 +10,7 @@
   <m-dialog v-if="uiModule.isDialogShow"></m-dialog>
   <m-notify v-if="uiModule.isNotifyShow"></m-notify>
   <m-loading v-if="uiModule.isLoadingShow"></m-loading>
+  <m-toast-message></m-toast-message>
 </template>
 
 <script>
@@ -20,6 +21,7 @@ import EmployeeForm from "./components/EmployeeForm.vue";
 import MNotify from "./components/base/MNotify.vue";
 import MDialog from "./components/base/MDialog.vue";
 import MLoading from "./components/base/MLoading.vue";
+import MToastMessage from "./components/base/MToastMessage.vue";
 import { mapState } from "vuex";
 export default {
   name: "App",
@@ -31,6 +33,7 @@ export default {
     MNotify,
     MDialog,
     MLoading,
+    MToastMessage,
   },
   computed: {
     ...mapState({
