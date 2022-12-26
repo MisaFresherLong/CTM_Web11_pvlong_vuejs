@@ -30,13 +30,13 @@
           <label class="m-textfield --search-icon">
             <div class="m-input-container">
               <input
+                id="search-box"
                 class="m-input-container__input"
                 type="text"
                 name="search"
                 placeholder="Tìm kiếm"
                 v-model="searchInput"
-                @change="getEmployeeData()"
-                @keyup="getEmployeeData()"
+                @keyup="handleSearchData"
               />
               <button
                 type="button"
@@ -68,6 +68,8 @@
 </template>
 
 <script>
+// import $ from "jquery";
+import _ from "lodash";
 import { mapMutations, mapState, mapActions } from "vuex";
 import MButton from "../base/MButton.vue";
 import MTable from "../base/MTable.vue";
@@ -200,6 +202,15 @@ export default {
       if (!mode) mode = this.$enums.FormMode.CREATE;
       this.showForm({ mode });
     },
+
+    /**
+     * Xử lý tìm kiếm dữ liệu
+     * Author: PVLong (25/12/2022)
+     */
+    handleSearchData: _.debounce(function () {
+      this.paging.pageIndex = "1";
+      this.getEmployeeData();
+    }, 400),
 
     /**
      * Mở notify xác nhận xóa
