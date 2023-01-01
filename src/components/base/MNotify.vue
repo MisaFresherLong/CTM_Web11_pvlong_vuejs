@@ -15,6 +15,7 @@
             type="button"
             @click="handlePrimaryClick"
             v-if="notifyContent.isPrimaryBtnShow"
+            @keydown.exact.shift.tab.prevent="handlePreviousTabIndex"
           >
             {{ notifyContent.primaryBtnTitle }}
           </button>
@@ -37,6 +38,7 @@
             class="m-popup-footer__cancel-btn m-btn secondary-btn"
             @click="hideNotify"
             v-if="notifyContent.isCancelBtnShow"
+            @keydown.exact.tab.prevent="handleNextTabIndex"
           >
             {{ notifyContent.cancelBtnTitle }}
           </button>
@@ -87,6 +89,22 @@ export default {
       if (this.notifyContent?.secondaryBtnCallback)
         this.notifyContent.secondaryBtnCallback();
       this.hideNotify();
+    },
+
+    /**
+     * Xử lý lặp lại tabIndex
+     * Author: PVLong (19/12/2022)
+     */
+    handleNextTabIndex() {
+      this.$refs.primaryBtn.focus();
+    },
+
+    /**
+     * Xử lý lặp lại tabIndex
+     * Author: PVLong (19/12/2022)
+     */
+    handlePreviousTabIndex() {
+      this.$refs.cancelBtn.focus();
     },
   },
 };

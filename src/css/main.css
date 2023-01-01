@@ -216,8 +216,19 @@
 .main-content .table-toolbar {
   padding-bottom: 16px;
   display: flex;
+  flex-direction: row-reverse;
   justify-content: space-between;
   align-items: center;
+}
+
+.main-content .table-toolbar .toolbar__left-panel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.main-content .table-toolbar .toolbar__left-panel .m-btn {
+  font-family: notosans-semibold;
 }
 
 .main-content .table-toolbar .toolbar__right-panel {
@@ -257,7 +268,7 @@
 }
 
 #employee-form .m-popup-container {
-  width: 1000px;
+  width: 900px;
 }
 
 #employee-form {
@@ -266,6 +277,10 @@
 
 #employee-form .m-textfield input::placeholder {
   color: #fff;
+}
+
+#employee-form .m-popup-container__body {
+  padding-bottom: 0;
 }
 
 /* popup header */

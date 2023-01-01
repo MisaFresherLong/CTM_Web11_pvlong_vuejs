@@ -121,6 +121,10 @@
 
 .link-btn:hover {}
 
+.link-btn.--danger {
+  color: var(--btn-danger-color);
+}
+
 /* icon button */
 
 .icon-btn {
@@ -160,12 +164,8 @@
 
 .m-btn-with-icon .btn-icon {
   margin-right: 4px;
+  filter: brightness(1000%);
 }
-
-.delete-btn {
-  filter: brightness(1000);
-}
-
 
 /* context menu button */
 .m-context-menu-btn {

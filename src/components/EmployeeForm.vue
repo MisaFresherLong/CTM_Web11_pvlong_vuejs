@@ -136,8 +136,8 @@
                       </div>
                     </div>
                     <div class="col c-6">
-                      <div class="row gutter-16">
-                        <div class="col c-4">
+                      <div class="row">
+                        <div class="col c-5">
                           <m-textfield
                             :schema="{
                               label: 'Ngày sinh',
@@ -153,7 +153,7 @@
                             "
                           ></m-textfield>
                         </div>
-                        <div class="col c-8">
+                        <div class="col c-7">
                           <!-- horizontal radio start -->
                           <div class="m-textfield">
                             <label for="">Giới tính</label>
@@ -216,7 +216,7 @@
                             <!-- horizontal radio end -->
                           </div>
                         </div>
-                        <div class="col c-8">
+                        <div class="col c-7">
                           <!-- normal textfield start -->
                           <m-textfield
                             :schema="{
@@ -233,7 +233,7 @@
                           ></m-textfield>
                           <!-- normal textfield end -->
                         </div>
-                        <div class="col c-4">
+                        <div class="col c-5">
                           <!-- date textfield start-->
                           <m-textfield
                             :schema="{

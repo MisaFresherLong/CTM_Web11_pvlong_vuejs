@@ -8,7 +8,7 @@
       'border-btn': isBorder,
       'link-btn': isLink,
       '--danger': isDanger,
-      'm-btn-with-icon': withIcon,
+      'm-btn-with-icon': isWithIcon,
     }"
     :disabled="disabled"
     :tabindex="tabindex"
@@ -57,7 +57,7 @@ export default {
         return false;
       },
     },
-    withIcon: {
+    isWithIcon: {
       type: Boolean,
       default() {
         return false;

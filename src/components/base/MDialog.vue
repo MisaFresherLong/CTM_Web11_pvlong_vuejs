@@ -27,7 +27,8 @@
             class="m-popup-footer__secondary-btn m-btn secondary-btn"
             type="button"
             @click="handleSecondaryClick"
-            autofocus
+            ref="tabIndexStart"
+            @keydown.exact.shift.tab.prevent="handlePreviousTabIndex"
           >
             {{ dialogContent.secondaryBtnTitle }}
           </button>
@@ -38,6 +39,8 @@
             type="button"
             class="m-popup-footer__cancel-btn m-btn secondary-btn"
             @click="hideDialog"
+            ref="tabIndexEnd"
+            @keydown.exact.tab.prevent="handleNextTabIndex"
           >
             Hủy
           </button>
@@ -78,6 +81,22 @@ export default {
       if (this.dialogContent?.secondaryBtnCallback)
         this.dialogContent.secondaryBtnCallback();
       this.hideDialog();
+    },
+
+    /**
+     * Xử lý lặp lại tabIndex
+     * Author: PVLong (19/12/2022)
+     */
+    handleNextTabIndex() {
+      this.$refs.tabIndexStart.focus();
+    },
+
+    /**
+     * Xử lý lặp lại tabIndex
+     * Author: PVLong (19/12/2022)
+     */
+    handlePreviousTabIndex() {
+      this.$refs.tabIndexEnd.focus();
     },
   },
 };

@@ -16,31 +16,21 @@
     <div class="main-content__table-content">
       <!-- table toolbar start -->
       <div class="table-toolbar">
-        <div class="toolbar__left-panel">
-          <m-button
-            id="deleteManyBtn"
-            isBorder
-            :disabled="employeeIds.length == 0"
-            @click="openConfirmDeleteNotify"
-          >
-            Xóa hàng loạt
-          </m-button>
-        </div>
         <div class="toolbar__right-panel">
-          <label class="m-textfield --search-icon">
+          <label class="m-textfield w-250">
             <div class="m-input-container">
               <input
                 id="search-box"
                 class="m-input-container__input"
                 type="text"
                 name="search"
-                placeholder="Tìm kiếm"
+                placeholder="Tìm theo mã, tên nhân viên"
                 v-model="searchInput"
                 @keyup="handleSearchData"
               />
               <button
                 type="button"
-                class="m-input-container__icon m-icon"
+                class="m-input-container__icon m-icon icon-20 icon-search-sm"
                 tabindex="-1"
                 @click="getEmployeeData()"
               ></button>
@@ -50,6 +40,24 @@
             class="table-toolbar__refreshIcon m-icon icon-20 icon-refresh"
             @click="getEmployeeData()"
           ></div>
+        </div>
+        <div class="toolbar__left-panel" v-if="employeeIds.length != 0">
+          <span
+            >Đã chọn <strong>{{ employeeIds.length }}</strong></span
+          >
+          <m-button isLink isDanger @click="removeAllRowCheckbox">
+            Bỏ chọn
+          </m-button>
+          <m-button
+            id="deleteManyBtn"
+            isPrimary
+            isDanger
+            isWithIcon
+            @click="openConfirmDeleteNotify"
+          >
+            <div class="btn-icon icon-20 icon-delete"></div>
+            Xóa
+          </m-button>
         </div>
       </div>
       <!-- table toolbar end -->
@@ -68,7 +76,7 @@
 </template>
 
 <script>
-// import $ from "jquery";
+import $ from "jquery";
 import _ from "lodash";
 import { mapMutations, mapState, mapActions } from "vuex";
 import MButton from "../base/MButton.vue";
@@ -211,6 +219,17 @@ export default {
       this.paging.pageIndex = "1";
       this.getEmployeeData();
     }, 400),
+
+    /**
+     * uncheck tất cả checkbox
+     * Author: PVLong (20/12/2022)
+     */
+    removeAllRowCheckbox() {
+      $(".m-table .m-input-checkbox:checked").each(function () {
+        $(this).prop("checked", false);
+      });
+      this.employeeIds = [];
+    },
 
     /**
      * Mở notify xác nhận xóa
