@@ -15,6 +15,8 @@
         :dataProperty="schema.dataProperty || schema.name"
         :rules="schema.rules ? schema.rules : ''"
         v-model="value"
+        :tabindex="schema.tabindex ? schema.tabindex : 0"
+        ref="input"
       />
       <p class="m-input-container__message"></p>
       <button
@@ -30,6 +32,7 @@
 <script>
 export default {
   name: "MTextfield",
+  expose: ["focusInput"],
   emits: ["update:modelValue"],
   props: {
     schema: {
@@ -46,6 +49,7 @@ export default {
         };
       },
     },
+    isTabIndexStart: Boolean,
     modelValue: String,
   },
   data() {
@@ -78,7 +82,15 @@ export default {
   mounted() {
     // this.log("m-textfield mounted.....................");
   },
-  methods: {},
+  methods: {
+    /**
+     * Xử lý focus input
+     * Author: PVLong (19/12/2022)
+     */
+    focusInput() {
+      this.$refs.input.focus();
+    },
+  },
 };
 </script>
 

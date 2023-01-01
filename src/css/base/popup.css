@@ -35,14 +35,14 @@
 
 .m-popup-body__title {
   font-size: 24px;
-  font-weight: bold;
+  font-family: notosans-bold;
   text-align: left;
   margin-bottom: 24px;
 }
 
 .m-popup-body__description {
   font-size: 14px;
-  font-weight: 500;
+  font-family: notosans-semibold;
   text-align: left;
   margin-bottom: 16px;
 }
@@ -57,6 +57,10 @@
   display: flex;
   justify-content: space-between;
   flex-direction: row-reverse;
+}
+
+.m-popup-container__footer .m-btn {
+  font-family: notosans-semibold;
 }
 
 .m-popup-footer__left-panel {}

@@ -23,6 +23,7 @@
                       placeholder=""
                       value="isCustomer"
                       id="m-radio-customer"
+                      tabindex="10"
                     />
                     <label class="m-radio-item__label" for="m-radio-customer"
                       >Là khách hàng</label
@@ -36,6 +37,7 @@
                       placeholder=""
                       value="isSupplier"
                       id="m-radio-supplier"
+                      tabindex="20"
                     />
                     <label class="m-radio-item__label" for="m-radio-supplier"
                       >Là nhà cung cấp</label
@@ -61,327 +63,330 @@
           <div class="m-popup-body__form">
             <div class="grid">
               <div class="row">
-                <div class="col c-2">
-                  <m-textfield
-                    :schema="{
-                      label: 'Mã',
-                      type: 'text',
-                      name: 'EmployeeCode',
-                      placeholder: 'Mã nhân viên',
-                      rules: 'required',
-                      dataProperty: 'EmployeeCode',
-                    }"
-                    v-model="formData.EmployeeCode"
-                  ></m-textfield>
-                </div>
-                <div class="col c-4">
-                  <m-textfield
-                    :schema="{
-                      label: 'Tên',
-                      type: 'text',
-                      name: 'EmployeeName',
-                      placeholder: 'Họ và tên',
-                      rules: 'required',
-                      dataProperty: 'EmployeeName',
-                    }"
-                    v-model="formData.EmployeeName"
-                  ></m-textfield>
-                </div>
-                <div class="col c-2">
-                  <m-textfield
-                    :schema="{
-                      label: 'Ngày sinh',
-                      type: 'date',
-                      name: 'dateOfBirth',
-                      placeholder: 'Ngày sinh',
-                      rules: '',
-                      dataProperty: 'DateOfBirth',
-                    }"
-                    :modelValue="formFormatter.date(formData.DateOfBirth)"
-                  ></m-textfield>
-                </div>
-                <div class="col c-4">
-                  <!-- horizontal radio start -->
-                  <div class="m-textfield">
-                    <label for="">Giới tính</label>
-                    <div class="m-radio-container m-radio-container--hor">
-                      <div class="m-radio-item">
-                        <input
-                          class="m-radio-item__input"
-                          type="radio"
-                          name="gender"
-                          dataProperty="Gender"
-                          value="0"
-                          id="m-radio-nam"
-                          checked
-                          v-model="formData.Gender"
-                        />
-                        <label class="m-radio-item__label" for="m-radio-nam"
-                          >Nam</label
-                        >
-                      </div>
-                      <div class="m-radio-item">
-                        <input
-                          class="m-radio-item__input"
-                          type="radio"
-                          name="gender"
-                          dataProperty="Gender"
-                          value="1"
-                          id="m-radio-nu"
-                          v-model="formData.Gender"
-                        />
-                        <label class="m-radio-item__label" for="m-radio-nu"
-                          >Nữ</label
-                        >
-                      </div>
-                      <div class="m-radio-item">
-                        <input
-                          class="m-radio-item__input"
-                          type="radio"
-                          name="gender"
-                          dataProperty="Gender"
-                          value="2"
-                          id="m-radio-khac"
-                          v-model="formData.Gender"
-                        />
-                        <label class="m-radio-item__label" for="m-radio-khac"
-                          >Khác</label
-                        >
+                <div class="col c-12">
+                  <div class="row gutter-24">
+                    <div class="col c-6">
+                      <div class="row">
+                        <div class="col c-4">
+                          <m-textfield
+                            :schema="{
+                              label: 'Mã',
+                              type: 'text',
+                              name: 'EmployeeCode',
+                              placeholder: 'Mã nhân viên',
+                              rules: 'required',
+                              dataProperty: 'EmployeeCode',
+                              tabindex: 30,
+                            }"
+                            ref="tabIndexStart"
+                            @keydown.exact.shift.tab.prevent="
+                              handlePreviousTabIndex
+                            "
+                            v-model="formData.EmployeeCode"
+                          >
+                          </m-textfield>
+                        </div>
+                        <div class="col c-8">
+                          <m-textfield
+                            :schema="{
+                              label: 'Tên',
+                              type: 'text',
+                              name: 'EmployeeName',
+                              placeholder: 'Họ và tên',
+                              rules: 'required',
+                              dataProperty: 'EmployeeName',
+                              tabindex: 40,
+                            }"
+                            v-model="formData.EmployeeName"
+                          ></m-textfield>
+                        </div>
+                        <div class="col c-12">
+                          <!-- dropdownlist top start -->
+                          <m-dropdown-list
+                            :schema="{
+                              label: 'Đơn vị',
+                              type: 'text',
+                              name: 'DepartmentId',
+                              placeholder: 'Chọn đơn vị',
+                              rules: 'required',
+                              dataProperty: 'DepartmentId',
+                              tabindex: 70,
+                            }"
+                            :data="getDepartmentsKeyValue"
+                            v-model="formData.DepartmentId"
+                          ></m-dropdown-list>
+                          <!-- dropdownlist top end -->
+                        </div>
+                        <div class="col c-12">
+                          <!-- normal textfield start -->
+                          <m-textfield
+                            :schema="{
+                              label: 'Chức danh',
+                              type: 'text',
+                              name: 'employeePosition',
+                              placeholder: 'Chức danh',
+                              rules: '',
+                              dataProperty: 'EmployeePosition',
+                              tabindex: 100,
+                            }"
+                            v-model="formData.EmployeePosition"
+                          ></m-textfield>
+                          <!-- normal textfield end -->
+                        </div>
                       </div>
                     </div>
-                    <!-- horizontal radio end -->
-                  </div>
-                </div>
-                <div class="col c-6">
-                  <!-- dropdownlist top start -->
-                  <m-dropdown-list
-                    :schema="{
-                      label: 'Đơn vị',
-                      type: 'text',
-                      name: 'DepartmentId',
-                      placeholder: 'Chọn đơn vị',
-                      rules: 'required',
-                      dataProperty: 'DepartmentId',
-                    }"
-                    :data="getDepartmentsKeyValue"
-                    v-model="formData.DepartmentId"
-                  ></m-dropdown-list>
-                  <!-- dropdownlist top end -->
-                </div>
-                <div class="col c-4">
-                  <!-- normal textfield start -->
-                  <div class="m-textfield">
-                    <label for="" class="" title="Số chứng minh nhân dân">
-                      Số CMND</label
-                    >
-                    <div class="m-input-container">
-                      <input
-                        class="m-input-container__input"
-                        type="number"
-                        name="identityNumber"
-                        dataProperty="IdentityNumber"
-                        placeholder="Số CMND"
-                      />
+                    <div class="col c-6">
+                      <div class="row gutter-16">
+                        <div class="col c-4">
+                          <m-textfield
+                            :schema="{
+                              label: 'Ngày sinh',
+                              type: 'date',
+                              name: 'dateOfBirth',
+                              placeholder: 'Ngày sinh',
+                              rules: '',
+                              dataProperty: 'DateOfBirth',
+                              tabindex: 50,
+                            }"
+                            :modelValue="
+                              formFormatter.date(formData.DateOfBirth)
+                            "
+                          ></m-textfield>
+                        </div>
+                        <div class="col c-8">
+                          <!-- horizontal radio start -->
+                          <div class="m-textfield">
+                            <label for="">Giới tính</label>
+                            <div
+                              class="m-radio-container m-radio-container--hor"
+                            >
+                              <div class="m-radio-item">
+                                <input
+                                  class="m-radio-item__input"
+                                  type="radio"
+                                  name="gender"
+                                  dataProperty="Gender"
+                                  value="0"
+                                  id="m-radio-nam"
+                                  checked
+                                  v-model="formData.Gender"
+                                  tabindex="60"
+                                />
+                                <label
+                                  class="m-radio-item__label"
+                                  for="m-radio-nam"
+                                  >Nam</label
+                                >
+                              </div>
+                              <div class="m-radio-item">
+                                <input
+                                  class="m-radio-item__input"
+                                  type="radio"
+                                  name="gender"
+                                  dataProperty="Gender"
+                                  value="1"
+                                  id="m-radio-nu"
+                                  v-model="formData.Gender"
+                                  tabindex="60"
+                                />
+                                <label
+                                  class="m-radio-item__label"
+                                  for="m-radio-nu"
+                                  >Nữ</label
+                                >
+                              </div>
+                              <div class="m-radio-item">
+                                <input
+                                  class="m-radio-item__input"
+                                  type="radio"
+                                  name="gender"
+                                  dataProperty="Gender"
+                                  value="2"
+                                  id="m-radio-khac"
+                                  v-model="formData.Gender"
+                                  tabindex="60"
+                                />
+                                <label
+                                  class="m-radio-item__label"
+                                  for="m-radio-khac"
+                                  >Khác</label
+                                >
+                              </div>
+                            </div>
+                            <!-- horizontal radio end -->
+                          </div>
+                        </div>
+                        <div class="col c-8">
+                          <!-- normal textfield start -->
+                          <m-textfield
+                            :schema="{
+                              label: 'Số CMND',
+                              title: 'Số chứng minh nhân dân',
+                              type: 'number',
+                              name: 'identityNumber',
+                              placeholder: 'Số CMND',
+                              rules: '',
+                              dataProperty: 'IdentityNumber',
+                              tabindex: 80,
+                            }"
+                            v-model="formData.IdentityNumber"
+                          ></m-textfield>
+                          <!-- normal textfield end -->
+                        </div>
+                        <div class="col c-4">
+                          <!-- date textfield start-->
+                          <m-textfield
+                            :schema="{
+                              label: 'Ngày cấp',
+                              type: 'date',
+                              name: 'identityDate',
+                              placeholder: 'Ngày cấp CMND',
+                              rules: '',
+                              dataProperty: 'IdentityDate',
+                              tabindex: 90,
+                            }"
+                            :modelValue="
+                              formFormatter.date(formData.IdentityDate)
+                            "
+                          ></m-textfield>
+                          <!-- date textfield end-->
+                        </div>
+                        <div class="col c-12">
+                          <!-- normal textfield start -->
+                          <m-textfield
+                            :schema="{
+                              label: 'Nơi cấp',
+                              type: 'text',
+                              name: 'identityPlace',
+                              placeholder: 'Cơ quan cấp CMND',
+                              rules: '',
+                              dataProperty: 'IdentityPlace',
+                              tabindex: 110,
+                            }"
+                            v-model="formData.IdentityPlace"
+                          ></m-textfield>
+                          <!-- normal textfield end -->
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <!-- normal textfield end -->
-                </div>
-                <div class="col c-2">
-                  <!-- date textfield start-->
-                  <div class="m-textfield">
-                    <label for="">Ngày cấp</label>
-                    <div class="m-date-container">
-                      <input
-                        class="m-date-container__input m-input-container__input"
-                        type="date"
-                        name="identityDate"
-                        placeholder="Ngày cấp CMND"
-                      />
-                    </div>
-                  </div>
-                  <!-- date textfield end-->
-                </div>
-                <div class="col c-6">
-                  <!-- normal textfield start -->
-                  <div class="m-textfield">
-                    <label for="" class=""> Chức danh</label>
-                    <div class="m-input-container">
-                      <input
-                        class="m-input-container__input"
-                        type="text"
-                        name="positionName"
-                        dataProperty="PositionName"
-                        placeholder="Chức danh"
-                      />
-                    </div>
-                  </div>
-                  <!-- normal textfield end -->
-                </div>
-                <div class="col c-6">
-                  <!-- normal textfield start -->
-                  <div class="m-textfield">
-                    <label for="" class=""> Nơi cấp</label>
-                    <div class="m-input-container">
-                      <input
-                        class="m-input-container__input"
-                        type="text"
-                        name="identityPlace"
-                        placeholder="Cơ quan cấp CMND"
-                      />
-                    </div>
-                  </div>
-                  <!-- normal textfield end -->
                 </div>
                 <div class="col c-12">
                   <!-- normal textfield start -->
-                  <div class="m-textfield">
-                    <label for="" class=""> Địa chỉ</label>
-                    <div class="m-input-container">
-                      <input
-                        class="m-input-container__input"
-                        type="text"
-                        name="address"
-                        placeholder="Địa chỉ tạm trú"
-                      />
-                    </div>
-                  </div>
+                  <m-textfield
+                    :schema="{
+                      label: 'Địa chỉ',
+                      type: 'text',
+                      name: 'address',
+                      placeholder: 'Địa chỉ tạm trú',
+                      rules: '',
+                      dataProperty: 'Address',
+                      tabindex: 120,
+                    }"
+                    v-model="formData.Address"
+                  ></m-textfield>
                   <!-- normal textfield end -->
                 </div>
                 <div class="col c-3">
                   <!-- normal textfield start -->
-                  <div class="m-textfield">
-                    <label for="" class="" title="Điện thoại di động">
-                      ĐT di động</label
-                    >
-                    <div class="m-input-container">
-                      <input
-                        class="m-input-container__input"
-                        type="number"
-                        name="phoneNumber"
-                        placeholder="Số điện thoại di động"
-                      />
-                      <p class="m-input-container__message"></p>
-                      <button
-                        type="button"
-                        class="m-input-container__icon m-icon"
-                        tabindex="-1"
-                      ></button>
-                    </div>
-                  </div>
+                  <m-textfield
+                    :schema="{
+                      label: 'ĐT di động',
+                      title: 'Điện thoại di động',
+                      type: 'number',
+                      name: 'phoneNumber',
+                      placeholder: 'Số điện thoại di động',
+                      rules: '',
+                      dataProperty: 'PhoneNumber',
+                      tabindex: 120,
+                    }"
+                    v-model="formData.PhoneNumber"
+                  ></m-textfield>
                   <!-- normal textfield end -->
                 </div>
                 <div class="col c-3">
                   <!-- normal textfield start -->
-                  <div class="m-textfield">
-                    <label for="" class="" title="Điện thoại cố định">
-                      ĐT cố định</label
-                    >
-                    <div class="m-input-container">
-                      <input
-                        class="m-input-container__input"
-                        type="number"
-                        name="telephoneNumber"
-                        placeholder="Số điện thoại cố định"
-                      />
-                      <p class="m-input-container__message"></p>
-                      <button
-                        type="button"
-                        class="m-input-container__icon m-icon"
-                        tabindex="-1"
-                      ></button>
-                    </div>
-                  </div>
+                  <m-textfield
+                    :schema="{
+                      label: 'ĐT cố định',
+                      title: 'Điện thoại cố định',
+                      type: 'number',
+                      name: 'telephoneNumber',
+                      placeholder: 'Số điện thoại cố định',
+                      rules: '',
+                      dataProperty: 'TelephoneNumber',
+                      tabindex: 120,
+                    }"
+                    v-model="formData.TelephoneNumber"
+                  ></m-textfield>
                   <!-- normal textfield end -->
                 </div>
                 <div class="col c-3">
                   <!-- normal textfield start -->
-                  <div class="m-textfield">
-                    <label for="" class=""> Email</label>
-                    <div class="m-input-container">
-                      <input
-                        class="m-input-container__input"
-                        type="text"
-                        name="email"
-                        dataProperty="Email"
-                        placeholder="Thư điện tử"
-                      />
-                      <p class="m-input-container__message"></p>
-                      <button
-                        type="button"
-                        class="m-input-container__icon m-icon"
-                        tabindex="-1"
-                      ></button>
-                    </div>
-                  </div>
+                  <m-textfield
+                    :schema="{
+                      label: 'Email',
+                      type: 'text',
+                      name: 'email',
+                      placeholder: 'Thư điện tử',
+                      rules: '',
+                      dataProperty: 'Email',
+                      tabindex: 130,
+                    }"
+                    v-model="formData.Email"
+                  ></m-textfield>
                   <!-- normal textfield end -->
                 </div>
-                <div class="row">
-                  <div class="col c-3">
-                    <!-- normal textfield start -->
-                    <div class="m-textfield">
-                      <label for="" class=""> Tài khoản ngân hàng</label>
-                      <div class="m-input-container">
-                        <input
-                          class="m-input-container__input"
-                          type="number"
-                          name="bankAccountNumber"
-                          placeholder="Số tài khoản ngân hàng"
-                        />
-                        <p class="m-input-container__message"></p>
-                        <button
-                          type="button"
-                          class="m-input-container__icon m-icon"
-                          tabindex="-1"
-                        ></button>
-                      </div>
+                <div class="col c-12">
+                  <div class="row">
+                    <div class="col c-3">
+                      <!-- normal textfield start -->
+                      <m-textfield
+                        :schema="{
+                          label: 'Tài khoản ngân hàng',
+                          type: 'number',
+                          name: 'bankAccountNumber',
+                          placeholder: 'Số tài khoản ngân hàng',
+                          rules: '',
+                          dataProperty: 'BankAccountNumber',
+                          tabindex: 140,
+                        }"
+                        v-model="formData.BankAccountNumber"
+                      ></m-textfield>
+                      <!-- normal textfield end -->
                     </div>
-                    <!-- normal textfield end -->
-                  </div>
-                  <div class="col c-3">
-                    <!-- normal textfield start -->
-                    <div class="m-textfield">
-                      <label for="" class=""> Tên ngân hàng</label>
-                      <div class="m-input-container">
-                        <input
-                          class="m-input-container__input"
-                          type="text"
-                          name="bankName"
-                          placeholder="Tên ngân hàng"
-                        />
-                        <p class="m-input-container__message">
-                          nội dung message dài
-                        </p>
-                        <button
-                          type="button"
-                          class="m-input-container__icon m-icon"
-                          tabindex="-1"
-                        ></button>
-                      </div>
+                    <div class="col c-3">
+                      <!-- normal textfield start -->
+                      <m-textfield
+                        :schema="{
+                          label: 'Tên ngân hàng',
+                          type: 'text',
+                          name: 'bankName',
+                          placeholder: 'Tên ngân hàng',
+                          rules: '',
+                          dataProperty: 'BankName',
+                          tabindex: 150,
+                        }"
+                        v-model="formData.BankName"
+                      ></m-textfield>
+                      <!-- normal textfield end -->
                     </div>
-                    <!-- normal textfield end -->
-                  </div>
-                  <div class="col c-3">
-                    <!-- normal textfield start -->
-                    <div class="m-textfield">
-                      <label for="" class=""> Chi nhánh</label>
-                      <div class="m-input-container">
-                        <input
-                          class="m-input-container__input"
-                          type="text"
-                          name="bankBranchName"
-                          placeholder="Chi nhánh ngân hàng"
-                        />
-                        <p class="m-input-container__message">
-                          nội dung message dài
-                        </p>
-                        <button
-                          type="button"
-                          class="m-input-container__icon m-icon"
-                          tabindex="-1"
-                        ></button>
-                      </div>
+                    <div class="col c-3">
+                      <!-- normal textfield start -->
+                      <m-textfield
+                        :schema="{
+                          label: 'Chi nhánh',
+                          type: 'text',
+                          name: 'bankBranchName',
+                          placeholder: 'Chi nhánh ngân hàng',
+                          rules: '',
+                          dataProperty: 'BankBranchName',
+                          tabindex: 160,
+                        }"
+                        v-model="formData.BankBranchName"
+                      ></m-textfield>
+                      <!-- normal textfield end -->
                     </div>
-                    <!-- normal textfield end -->
                   </div>
                 </div>
               </div>
@@ -397,6 +402,7 @@
               ref="primaryBtn"
               class="m-popup-footer__primary-btn m-btn primary-btn"
               type="submit"
+              tabindex="170"
             >
               Cất và thêm
             </button>
@@ -404,6 +410,7 @@
               ref="secondaryBtn"
               class="m-popup-footer__secondary-btn m-btn secondary-btn"
               type="submit"
+              tabindex="180"
             >
               Cất
             </button>
@@ -411,9 +418,12 @@
           <div id="formTabIndexEnd" class="m-popup-footer__left-panel">
             <button
               id="formCancelBtn"
+              ref="tabIndexEnd"
               type="button"
+              tabindex="190"
               class="m-popup-footer__cancel-btn m-btn secondary-btn"
               @click="handleCancelForm"
+              @keydown.exact.tab.prevent="handleNextTabIndex"
             >
               Hủy
             </button>
@@ -485,12 +495,16 @@ export default {
   },
   mounted() {
     this.log("m-form mounted.....................");
+    //
     this.getDepartments();
     if (this.isCreateForm) {
       this.getNewEmployeeCode();
     } else {
       this.getCurrentEmployee();
     }
+
+    // focus trường mã
+    this.$refs.tabIndexStart.focusInput();
 
     /**
      * Tích hợp thư viện validate
@@ -630,6 +644,22 @@ export default {
         },
       };
       this.showNotify(notifyContent);
+    },
+
+    /**
+     * Xử lý lặp lại tabIndex
+     * Author: PVLong (19/12/2022)
+     */
+    handleNextTabIndex() {
+      this.$refs.tabIndexStart.focusInput();
+    },
+
+    /**
+     * Xử lý lặp lại tabIndex
+     * Author: PVLong (19/12/2022)
+     */
+    handlePreviousTabIndex() {
+      this.$refs.tabIndexEnd.focus();
     },
   },
 };

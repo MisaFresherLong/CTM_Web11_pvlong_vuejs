@@ -23,6 +23,7 @@
           :dataProperty="schema.dataProperty || schema.name"
           :rules="schema.rules ? schema.rules : ''"
           :disabled="schema.disabled ? schema.disabled : false"
+          :tabindex="schema.tabindex ? schema.tabindex : 0"
           v-model="inputValue"
           :data-item-key="inputKey"
         />
@@ -34,6 +35,7 @@
         <div class="m-dropdownlist-data">
           <div
             class="m-dropdownlist-data__item"
+            :class="{ active: item.value == inputValue }"
             v-for="item in data"
             :key="item.key"
             @click="handleChange(item.key)"

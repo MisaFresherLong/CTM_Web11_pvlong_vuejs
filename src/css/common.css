@@ -89,21 +89,15 @@
 
   /* context menu */
   --context-menu-item-height: 30px;
+  --context-menu-hover-background-color: #EBEDF0;
+  --context-menu-hover-color: #50B83C;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  /* font-family: inherit;
-  font-size: inherit;
-  outline: none;
-  text-transform: none;
-  text-decoration: none;
-  text-decoration-line: none;
-  text-decoration-thickness: initial;
-  text-decoration-style: solid;
-  text-decoration-color: initial; */
+  font-family: notosans-regular;
 }
 
 html {

@@ -11,6 +11,7 @@
       'm-btn-with-icon': withIcon,
     }"
     :disabled="disabled"
+    :tabindex="tabindex"
   >
     <slot></slot>
   </button>
@@ -66,6 +67,12 @@ export default {
       type: String,
       default() {
         return "button";
+      },
+    },
+    tabindex: {
+      type: Number,
+      default() {
+        return 0;
       },
     },
   },

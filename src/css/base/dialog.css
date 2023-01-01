@@ -26,7 +26,7 @@
 
 .m-dialog-header__title {
   font-size: 20px;
-  font-weight: bold;
+  font-family: notosans-bold;
   text-align: left;
 }
 
@@ -37,7 +37,7 @@
 .m-dialog__description {
   padding: 24px 0px;
   font-size: 14px;
-  font-weight: 500;
+  font-family: notosans-semibold;
   text-align: left;
 }
 
@@ -45,6 +45,10 @@
   float: right;
   display: flex;
   flex-flow: nowrap row-reverse;
+}
+
+.m-dialog__footer .m-btn {
+  font-family: notosans-semibold;
 }
 
 .m-dialog__footer .m-btn~.m-btn {

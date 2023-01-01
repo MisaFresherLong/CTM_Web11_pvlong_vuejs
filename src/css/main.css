@@ -55,7 +55,7 @@
 
 .header__company {
   padding: 8px;
-  font-weight: bold;
+  font-family: notosans-bold;
 }
 
 .header__drop-icon {
@@ -262,6 +262,10 @@
 
 #employee-form {
   /* display: none; */
+}
+
+#employee-form .m-textfield input::placeholder {
+  color: #fff;
 }
 
 /* popup header */

@@ -125,7 +125,7 @@ export default {
           headerClass: "min-w-100",
           bodyClass: "",
           format: "default",
-          dataProperty: "JobPosition",
+          dataProperty: "EmployeePosition",
         },
         {
           name: "Đơn vị",

@@ -11,30 +11,31 @@
 .m-textfield {
   display: flex;
   flex-direction: column;
-  font-weight: bold;
+
   font-size: 14px;
 }
 
 .m-textfield>label {
   margin-bottom: 8px;
+  font-family: notosans-semibold;
 }
 
 .m-input-container {
   width: 100%;
   position: relative;
-  font-weight: 500;
+  font-family: notosans-regular;
 }
 
 .m-input-container__input {
   width: 100%;
   height: 36px;
   padding: 0px 12px;
-  border-radius: 4px;
+  border-radius: 2px;
   border: 1px solid var(--wcag-border-color);
+  font-size: 14px;
 }
 
 .m-input-container__input::placeholder {
-  color: #999999;
   font-size: 14px;
 }
 
@@ -121,14 +122,14 @@
   content: "tùy chọn";
   margin-left: 8px;
   font-style: italic;
-  font-weight: 500;
+  font-family: notosans-semibold;
   opacity: 0.56;
 }
 
 
 /* radio */
 .m-radio-container {
-  font-weight: 500;
+  font-family: notosans-regular;
 }
 
 .m-radio-item {
@@ -169,6 +170,10 @@
 
 .m-date-container__input {
   font-family: notosans-regular;
+}
+
+.m-date-container__input:invalid::-webkit-datetime-edit {
+  color: #999999;
 }
 
 .m-date-container__input::-webkit-calendar-picker-indicator {

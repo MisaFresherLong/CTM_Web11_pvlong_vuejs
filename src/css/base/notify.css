@@ -36,7 +36,6 @@
 
 .m-notify-header__message {
   font-size: 14px;
-  font-weight: 500;
   text-align: left;
 }
 
@@ -52,8 +51,13 @@
   justify-content: space-between;
 }
 
+.m-notify-footer .m-btn {
+  font-family: notosans-semibold;
+}
+
 .m-notify__footer .m-btn~.m-btn {
   margin-right: 8px;
+
 }
 
 /* modify */

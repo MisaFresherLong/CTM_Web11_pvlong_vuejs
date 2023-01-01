@@ -77,18 +77,18 @@
                   class="m-context-menu-btn__icon icon-18 icon-context-menu"
                 >
                   <div class="m-context-menu">
-                    <div class="m-context-menu-item">
+                    <!-- <div class="m-context-menu-item">
                       <div class="m-context-menu-item__text">Nhân bản</div>
-                    </div>
+                    </div> -->
                     <div
                       class="m-context-menu-item deleteRowBtn"
                       @click="openConfirmDeleteNotify(row)"
                     >
                       <div class="m-context-menu-item__text">Xóa</div>
                     </div>
-                    <div class="m-context-menu-item">
+                    <!-- <div class="m-context-menu-item">
                       <div class="m-context-menu-item__text">Ngưng sử dụng</div>
-                    </div>
+                    </div> -->
                   </div>
                 </button>
               </div>

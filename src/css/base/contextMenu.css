@@ -1,7 +1,7 @@
 .m-context-menu {
-  padding: 8px 0;
+  padding: 4px 0;
   background-color: var(--wcag-white-color);
-  width: 200px;
+  min-width: 150px;
   border: 1px solid var(--wcag-border-color);
   border-radius: 4px;
 }
@@ -15,8 +15,9 @@
 }
 
 .m-context-menu-item:hover {
-  color: var(--main-color-700);
-  background-color: var(--main-color-50)
+  background-color: var(--context-menu-hover-background-color);
+  color: var(--context-menu-hover-color);
+  cursor: pointer;
 }
 
 .m-context-menu-item__text {

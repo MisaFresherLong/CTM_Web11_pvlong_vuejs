@@ -7,7 +7,7 @@
 .m-form__title {
   font-size: 20px;
   line-height: 24px;
-  font-weight: bold;
+  font-family: notosans-bold;
   margin-bottom: 32px;
 }
 
@@ -17,6 +17,10 @@
 
 .m-form__footer {
   text-align: right;
+}
+
+.m-form__footer .m-btn {
+  font-family: notosans-semibold;
 }
 
 .m-form__footer>.m-btn~.m-btn {
