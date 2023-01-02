@@ -95,7 +95,7 @@
 }
 
 .m-textfield.--error .m-input-container__message {
-  display: block;
+  display: none;
   color: var(--btn-danger-color);
   font-size: var(--validate-message-fontSize);
   line-height: 14px;

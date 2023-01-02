@@ -4,6 +4,7 @@ const notifyMode = {
   WARNING: 3,
   ERROR: 4,
   QUESTION: 5,
+  INFO_PINK: 6,
 };
 
 /**
@@ -28,6 +29,9 @@ function getNotifyClass(mode) {
     }
     case notifyMode.QUESTION: {
       return "--question";
+    }
+    case notifyMode.INFO_PINK: {
+      return "--info-pink";
     }
     default: {
       return "--success";

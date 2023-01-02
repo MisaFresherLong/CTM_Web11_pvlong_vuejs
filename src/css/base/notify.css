@@ -39,6 +39,10 @@
   text-align: left;
 }
 
+.m-notify-header__message .message-item {
+  list-style-type: none;
+}
+
 .m-notify__separate {
   margin: 24px 0;
 }
@@ -85,6 +89,13 @@
 /* info */
 .m-notify.--info .m-notify-header__icon {
   background: var(--internal-image-url) no-repeat -672px -462px;
+  width: 36px;
+  height: 36px;
+}
+
+/* info */
+.m-notify.--info-pink .m-notify-header__icon {
+  background: var(--internal-image-url) no-repeat -752px -462px;
   width: 36px;
   height: 36px;
 }

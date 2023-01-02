@@ -14,7 +14,7 @@ export function Validator(formId, options = {}) {
     },
     email: function (value, label = "Trường này") {
       const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-      return regex.test(value) ? undefined : `${label} này phải là email`;
+      return regex.test(value) ? undefined : `${label} phải là email`;
     },
     min: function (min) {
       return function (value, label = "Trường này") {
@@ -130,6 +130,9 @@ export function Validator(formId, options = {}) {
       const messageElement = parentContainer.querySelector(
         ".m-input-container__message"
       );
+      const inputElement = parentContainer.querySelectorAll(
+        ".m-input-container__input"
+      )[0];
       const labelElement = parentContainer.querySelector("label");
 
       // Kiểm tra có lỗi hay không
@@ -146,11 +149,11 @@ export function Validator(formId, options = {}) {
       if (errorMessage) {
         parentContainer.classList.add("--error");
         messageElement.textContent = errorMessage;
-        // messageElement.title = errorMessage;
+        inputElement.setAttribute("title", errorMessage);
       } else {
         // parentContainer.classList.add("--validated");
         messageElement.textContent = "";
-        // messageElement.title = "";
+        inputElement.setAttribute("title", "");
       }
       return errorMessage;
     }
@@ -160,6 +163,9 @@ export function Validator(formId, options = {}) {
       const messageElement = parentContainer.querySelectorAll(
         ".m-input-container__message"
       )[0];
+      const inputElement = parentContainer.querySelectorAll(
+        ".m-input-container__input"
+      )[0];
 
       if (parentContainer.matches(".--error")) {
         parentContainer.classList.remove("--error");
@@ -167,25 +173,33 @@ export function Validator(formId, options = {}) {
         parentContainer.classList.remove("--validated");
       }
       messageElement.textContent = "";
-      // messageElement.title = "";
+      inputElement.setAttribute("title", "");
     }
 
     // handle form submit event
     formElement.onsubmit = function (event) {
       let isValid = true;
+      let listError = [];
       let payload = {};
 
       // Kiểm tra có lỗi hay không
       for (let input of inputs) {
-        let isError = handleValidate({ target: input });
-        if (isError) isValid = false;
+        let errorMessage = handleValidate({ target: input });
+        if (errorMessage) {
+          isValid = false;
+          listError.push(errorMessage);
+        }
       }
 
-      // Nếu có lỗi => không submit form
+      // Nếu có lỗi => không submit form + gọi callback onerror
       // Nếu không có lỗi và có onsubmit callback => không submit form, gọi onsubmit()
       // Nếu không có lỗi và không có onsubmit callback => submit form
-      if (!isValid) event.preventDefault();
-      else if (options.onsubmit) {
+      if (!isValid) {
+        event.preventDefault();
+        if (options.onerror) {
+          options.onerror(listError);
+        }
+      } else if (options.onsubmit) {
         event.preventDefault();
         payload = collectPayload(formElement);
         options.onsubmit(payload);

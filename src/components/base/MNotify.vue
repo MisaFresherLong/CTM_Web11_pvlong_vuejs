@@ -3,7 +3,18 @@
     <div class="m-notify-container">
       <div class="m-notify-header">
         <div class="m-notify-header__icon"></div>
-        <div class="m-notify-header__message">{{ notifyContent.message }}</div>
+        <div class="m-notify-header__message" v-if="isStringMessage">
+          {{ notifyContent.message }}
+        </div>
+        <div class="m-notify-header__message" v-else>
+          <li
+            class="message-item"
+            v-for="(msg, index) in notifyContent.message"
+            :key="index"
+          >
+            {{ msg }}
+          </li>
+        </div>
       </div>
       <hr class="m-notify__separate" />
       <div class="m-notify-footer m-button-container">
@@ -59,12 +70,21 @@ export default {
     ...mapState({
       notifyContent: (state) => state.uiModule.notifyContent,
     }),
+
     /**
      * Hàm lấy class của notify
      * Author: PVLong (20/12/2022)
      */
     notifyClass() {
       return this.$enums.NotifyMode.getNotifyClass(this.notifyContent.mode);
+    },
+
+    /**
+     * Hàm lấy class của notify
+     * Author: PVLong (20/12/2022)
+     */
+    isStringMessage() {
+      return typeof this.notifyContent.message == "string";
     },
   },
   mounted() {

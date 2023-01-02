@@ -54,7 +54,7 @@
               <div
                 id="formCloseBtn"
                 class="m-popup-body__close-btn m-close-btn m-icon icon-24 icon-close"
-                @click="hideForm"
+                @click="handleCancelForm"
               ></div>
             </div>
           </div>
@@ -422,7 +422,7 @@
               type="button"
               tabindex="190"
               class="m-popup-footer__cancel-btn m-btn secondary-btn"
-              @click="handleCancelForm"
+              @click="hideForm"
               @keydown.exact.tab.prevent="handleNextTabIndex"
             >
               Hủy
@@ -511,6 +511,7 @@ export default {
      */
     Validator("employee-form", {
       onsubmit: this.handleSubmitForm,
+      onerror: this.showValidateError,
     });
   },
   methods: {
@@ -573,6 +574,19 @@ export default {
             this.axiosNotifyError(err);
           });
       }
+    },
+
+    /**
+     * Hàm hiển thị validate messages
+     * Author: PVLong (19/12/2022)
+     */
+    showValidateError(messages) {
+      const notifyContent = {
+        mode: this.$enums.NotifyMode.INFO_PINK,
+        message: messages,
+        primaryBtnTitle: "Đóng",
+      };
+      this.showNotify(notifyContent);
     },
 
     /**
