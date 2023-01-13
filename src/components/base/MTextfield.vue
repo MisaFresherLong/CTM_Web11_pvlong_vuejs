@@ -72,10 +72,10 @@ export default {
      */
     value: {
       get() {
-        return this.modelValue;
+        return String(this.modelValue || "");
       },
       set(value) {
-        this.$emit("update:modelValue", value);
+        this.$emit("update:modelValue", String(value || ""));
       },
     },
   },

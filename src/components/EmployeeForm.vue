@@ -1,5 +1,5 @@
 <template>
-  <form id="employee-form">
+  <form id="employee-form" ref="employeeForm">
     <!-- popup component start -->
     <div class="m-popup">
       <!-- popup container start -->
@@ -401,8 +401,9 @@
             <button
               ref="primaryBtn"
               class="m-popup-footer__primary-btn m-btn primary-btn"
-              type="submit"
+              type="button"
               tabindex="170"
+              @click="handleSubmitAndReopen"
             >
               Cất và thêm
             </button>
@@ -456,6 +457,7 @@ export default {
         },
       },
       formData: {},
+      isReopenForm: false,
     };
   },
   computed: {
@@ -494,7 +496,7 @@ export default {
     },
   },
   mounted() {
-    this.log("m-form mounted.....................");
+    // this.log("m-form mounted.....................");
     //
     this.getDepartments();
     if (this.isCreateForm) {
@@ -523,6 +525,7 @@ export default {
     ]),
     ...mapActions([
       "fetchDepartments",
+      "showForm",
       "showDialog",
       "showNotify",
       "addToastMessage",
@@ -539,15 +542,24 @@ export default {
           .post(this.$constants.API.employees, payload)
           .then((res) => {
             this.debug(res.data);
-            // Hiển thị notify thành công
+            // Hiển thị toast-message thành công
             const content = {
               mode: this.$enums.ToastMessageMode.SUCCESS,
               message: "Thành công",
               body: "Thêm nhân viên thành công.",
             };
             this.addToastMessage(content);
+
             // Xử lý đóng form
-            this.hideForm();
+            // Nếu cần mở lại form, lưu lại formContent -> đóng form -> mở form
+            // Nếu không cần mở lại form, đóng form
+            if (this.isReopenForm) {
+              const currentFormContent = { ...this.formContent };
+              setTimeout(() => {
+                this.showForm(currentFormContent);
+              }, 0);
+              this.hideForm();
+            } else this.hideForm();
           })
           .catch((err) => {
             this.axiosNotifyError(err);
@@ -560,20 +572,38 @@ export default {
           )
           .then((res) => {
             this.debug(res.data);
-            // Hiển thị notify thành công
+            // Hiển thị toast-message thành công
             const content = {
               mode: this.$enums.ToastMessageMode.SUCCESS,
               message: "Thành công",
               body: "Sửa nhân viên thành công.",
             };
             this.addToastMessage(content);
+
             // Xử lý đóng form
-            this.hideForm();
+            // Nếu cần mở lại form, lưu lại formContent -> đóng form -> mở form
+            // Nếu không cần mở lại form, đóng form
+            if (this.isReopenForm) {
+              const currentFormContent = { ...this.formContent };
+              setTimeout(() => {
+                this.showForm(currentFormContent);
+              }, 0);
+              this.hideForm();
+            } else this.hideForm();
           })
           .catch((err) => {
             this.axiosNotifyError(err);
           });
       }
+    },
+
+    /**
+     * Hàm submit và mở lại form
+     * Author: PVLong (19/12/2022)
+     */
+    handleSubmitAndReopen() {
+      this.isReopenForm = true;
+      this.$refs.secondaryBtn.click();
     },
 
     /**

@@ -7,6 +7,8 @@
   display: flex;
   flex-flow: column wrap;
   gap: 12px;
+
+  z-index: 3000;
 }
 
 .m-toast-message {
@@ -19,6 +21,7 @@
   height: 56px;
 
   background-color: var(--wcag-white-color);
+  border: 1px solid var(--wcag-border-color);
   border-radius: 4px;
 
   animation: fade-in 0.1s ease-out;

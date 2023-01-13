@@ -275,7 +275,7 @@ export default {
       const content = {
         mode: this.$enums.ToastMessageMode.SUCCESS,
         message: "Thành công",
-        body: `Xóa nhiều nhân viên thành công.`,
+        body: `Xóa nhân viên thành công.`,
       };
       this.addToastMessage(content);
     },
