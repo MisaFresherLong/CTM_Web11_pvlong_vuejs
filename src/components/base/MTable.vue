@@ -111,6 +111,7 @@ import $ from "jquery";
 import { mapActions, mapMutations, mapState } from "vuex";
 import MCheckbox from "./MCheckbox.vue";
 import MTableFooter from "./MTableFooter.vue";
+import { EmployeeService } from "@/js/service";
 export default {
   name: "MTable",
   components: { MCheckbox, MTableFooter },
@@ -285,29 +286,28 @@ export default {
      * @param {*} id id của bản ghi cần xóa
      * Author: PVLong (20/12/2022)
      */
-    deleteRow(id, code) {
-      this.debug("delete", id);
-      this.axios
-        .delete(this.$constants.API.employees + `/${id}`)
-        .then((res) => {
-          // Ẩn notify
-          this.debug(res.data);
-          this.hideNotify();
+    async deleteRow(id, code) {
+      try {
+        this.debug("delete", id);
+        const employeeService = new EmployeeService();
+        const res = await employeeService.delete(id);
 
-          // Hiển thị toast message thành công
-          const content = {
-            mode: this.$enums.ToastMessageMode.SUCCESS,
-            message: "Thành công",
-            body: `Xóa nhân viên <${code}> thành công.`,
-          };
-          this.addToastMessage(content);
-        })
-        .catch((err) => {
-          this.axiosNotifyError(err);
-        })
-        .finally(() => {
-          this.$emit("reload");
-        });
+        // Ẩn notify
+        this.debug(res.data);
+        this.hideNotify();
+
+        // Hiển thị toast message thành công
+        const content = {
+          mode: this.$enums.ToastMessageMode.SUCCESS,
+          message: "Thành công",
+          body: `Xóa nhân viên <${code}> thành công.`,
+        };
+        this.addToastMessage(content);
+      } catch (error) {
+        this.axiosNotifyError(error);
+      } finally {
+        this.$emit("reload");
+      }
     },
   },
 };

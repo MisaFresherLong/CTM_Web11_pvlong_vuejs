@@ -81,6 +81,7 @@ import _ from "lodash";
 import { mapMutations, mapState, mapActions } from "vuex";
 import MButton from "../base/MButton.vue";
 import MTable from "../base/MTable.vue";
+import { EmployeeService } from "@/js/service";
 export default {
   components: { MButton, MTable },
   name: "TheMain",
@@ -257,27 +258,26 @@ export default {
      * Author: PVLong (20/12/2022)
      */
     async deleteRows() {
-      this.debug("delete", this.employeeIds);
-      for (let row of this.employeeIds) {
-        await this.axios
-          .delete(this.$constants.API.employees + `/${row.EmployeeId}`)
-          .then((res) => {
-            this.debug(res.data);
-          })
-          .catch((err) => {
-            this.axiosNotifyError(err);
-          });
-      }
-      this.getEmployeeData();
-      this.hideNotify();
+      try {
+        this.debug("delete", this.employeeIds);
+        const employeeService = new EmployeeService();
+        for (let row of this.employeeIds) {
+          await employeeService.delete(row.EmployeeId);
+        }
 
-      // Hiển thị toast message thành công
-      const content = {
-        mode: this.$enums.ToastMessageMode.SUCCESS,
-        message: "Thành công",
-        body: `Xóa nhân viên thành công.`,
-      };
-      this.addToastMessage(content);
+        this.getEmployeeData();
+        this.hideNotify();
+
+        // Hiển thị toast message thành công
+        const content = {
+          mode: this.$enums.ToastMessageMode.SUCCESS,
+          message: "Thành công",
+          body: `Xóa các nhân viên thành công.`,
+        };
+        this.addToastMessage(content);
+      } catch (error) {
+        this.axiosNotifyError(error);
+      }
     },
   },
 };

@@ -166,7 +166,7 @@
                                   type="radio"
                                   name="gender"
                                   dataProperty="Gender"
-                                  value="0"
+                                  value="1"
                                   id="m-radio-nam"
                                   checked
                                   v-model="formData.Gender"
@@ -184,7 +184,7 @@
                                   type="radio"
                                   name="gender"
                                   dataProperty="Gender"
-                                  value="1"
+                                  value="0"
                                   id="m-radio-nu"
                                   v-model="formData.Gender"
                                   tabindex="60"
@@ -444,6 +444,7 @@ import { Validator } from "../js/validator.js";
 
 import MTextfield from "./base/MTextfield.vue";
 import MDropdownList from "./base/MDropdownList.vue";
+import { EmployeeService } from "@/js/service";
 export default {
   name: "EmployeeFrom",
   components: { MTextfield, MDropdownList },
@@ -536,64 +537,45 @@ export default {
      * @param {*} payload dữ liệu đã được thu thập
      * Author: PVLong (19/12/2022)
      */
-    handleSubmitForm(payload) {
-      if (this.isCreateForm) {
-        this.axios
-          .post(this.$constants.API.employees, payload)
-          .then((res) => {
-            this.debug(res.data);
-            // Hiển thị toast-message thành công
-            const content = {
-              mode: this.$enums.ToastMessageMode.SUCCESS,
-              message: "Thành công",
-              body: "Thêm nhân viên thành công.",
-            };
-            this.addToastMessage(content);
+    async handleSubmitForm(payload) {
+      try {
+        const employeeService = new EmployeeService();
+        if (this.isCreateForm) {
+          // Gọi api
+          await employeeService.insert(payload);
 
-            // Xử lý đóng form
-            // Nếu cần mở lại form, lưu lại formContent -> đóng form -> mở form
-            // Nếu không cần mở lại form, đóng form
-            if (this.isReopenForm) {
-              const currentFormContent = { ...this.formContent };
-              setTimeout(() => {
-                this.showForm(currentFormContent);
-              }, 0);
-              this.hideForm();
-            } else this.hideForm();
-          })
-          .catch((err) => {
-            this.axiosNotifyError(err);
-          });
-      } else {
-        this.axios
-          .put(
-            this.$constants.API.employees + `/${this.formContent.employeeId}`,
-            payload
-          )
-          .then((res) => {
-            this.debug(res.data);
-            // Hiển thị toast-message thành công
-            const content = {
-              mode: this.$enums.ToastMessageMode.SUCCESS,
-              message: "Thành công",
-              body: "Sửa nhân viên thành công.",
-            };
-            this.addToastMessage(content);
+          // Hiển thị toast-message thành công
+          const content = {
+            mode: this.$enums.ToastMessageMode.SUCCESS,
+            message: "Thành công",
+            body: "Thêm nhân viên thành công.",
+          };
+          this.addToastMessage(content);
+        } else {
+          // Gọi api
+          await employeeService.update(payload, this.formContent.employeeId);
 
-            // Xử lý đóng form
-            // Nếu cần mở lại form, lưu lại formContent -> đóng form -> mở form
-            // Nếu không cần mở lại form, đóng form
-            if (this.isReopenForm) {
-              const currentFormContent = { ...this.formContent };
-              setTimeout(() => {
-                this.showForm(currentFormContent);
-              }, 0);
-              this.hideForm();
-            } else this.hideForm();
-          })
-          .catch((err) => {
-            this.axiosNotifyError(err);
-          });
+          // Hiển thị toast-message thành công
+          const content = {
+            mode: this.$enums.ToastMessageMode.SUCCESS,
+            message: "Thành công",
+            body: "Sửa nhân viên thành công.",
+          };
+          this.addToastMessage(content);
+        }
+
+        // Xử lý đóng form
+        // Nếu cần mở lại form, lưu lại formContent -> đóng form -> mở form
+        // Nếu không cần mở lại form, đóng form
+        if (this.isReopenForm) {
+          const currentFormContent = { ...this.formContent };
+          setTimeout(() => {
+            this.showForm(currentFormContent);
+          }, 0);
+          this.hideForm();
+        } else this.hideForm();
+      } catch (err) {
+        this.axiosNotifyError(err);
       }
     },
 
@@ -632,41 +614,36 @@ export default {
      * Hàm lấy mã nhân viên mới
      * Author: PVLong (19/12/2022)
      */
-    getNewEmployeeCode() {
-      const params = {};
-      this.axios
-        .get(this.$constants.API.newEmployeeCode, { params })
-        .then((res) => {
-          this.debug(res.data);
-          this.formData.EmployeeCode = res.data;
-        })
-        .catch((err) => {
-          this.error(err.response);
-        });
+    async getNewEmployeeCode() {
+      try {
+        const employeeService = new EmployeeService();
+        const res = await employeeService.getNewEmployeeCode();
+        this.debug(res);
+        this.formData.EmployeeCode = res;
+      } catch (error) {
+        this.error(error);
+      }
     },
 
     /**
      * Hàm lấy dữ liệu nhân viên
      * Author: PVLong (19/12/2022)
      */
-    getCurrentEmployee() {
+    async getCurrentEmployee() {
       this.showLoading();
-      const params = {};
-      this.axios
-        .get(
-          this.$constants.API.employees + `/${this.formContent.employeeId}`,
-          { params }
-        )
-        .then((res) => {
-          // this.debug(res.data);
-          this.formData = res.data;
-        })
-        .catch((err) => {
-          this.error(err.response);
-        })
-        .finally(() => {
-          this.hideLoading();
-        });
+      try {
+        const employeeService = new EmployeeService();
+        const params = {};
+        const res = await employeeService.getByID(
+          params,
+          this.formContent.employeeId
+        );
+        this.formData = res;
+      } catch (error) {
+        this.error(error);
+      } finally {
+        this.hideLoading();
+      }
     },
 
     /**

@@ -3,8 +3,8 @@
  * Author: PVLong (20/12/2022)
  */
 const gender = {
-  Male: 0,
-  Female: 1,
+  Female: 0,
+  Male: 1,
   Other: 2,
 };
 
@@ -13,8 +13,8 @@ const gender = {
  * Author: PVLong (20/12/2022)
  */
 const genderVietnamese = {
-  0: "Nam",
-  1: "Nữ",
+  0: "Nữ",
+  1: "Nam",
   2: "Khác",
 };
 

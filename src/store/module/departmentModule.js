@@ -1,5 +1,4 @@
-import axios from "@/plugins/axios";
-import { API } from "@/constants/api";
+import { DepartmentService } from "@/js/service";
 
 export const departmentModule = {
   state() {
@@ -8,16 +7,18 @@ export const departmentModule = {
     };
   },
   actions: {
-    fetchDepartments({ commit }) {
-      const params = {};
-      axios
-        .get(API.departments, { params })
-        .then((res) => {
-          commit("setDepartments", res.data);
-        })
-        .catch((err) => {
-          console.error(err.response);
-        });
+    async fetchDepartments({ commit }) {
+      try {
+        // Gọi api
+        const departmentService = new DepartmentService();
+        const params = {};
+        const res = await departmentService.get(params);
+
+        // Lưu dữ liệu vào store
+        commit("setDepartments", res);
+      } catch (error) {
+        console.error(error.response);
+      }
     },
   },
   mutations: {
