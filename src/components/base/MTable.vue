@@ -293,7 +293,7 @@ export default {
         const res = await employeeService.delete(id);
 
         // Ẩn notify
-        this.debug(res.data);
+        this.debug(res);
         this.hideNotify();
 
         // Hiển thị toast message thành công
@@ -304,7 +304,7 @@ export default {
         };
         this.addToastMessage(content);
       } catch (error) {
-        this.axiosNotifyError(error);
+        this.showApiError(error);
       } finally {
         this.$emit("reload");
       }

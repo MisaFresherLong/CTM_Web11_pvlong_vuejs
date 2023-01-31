@@ -222,7 +222,7 @@
                             :schema="{
                               label: 'Số CMND',
                               title: 'Số chứng minh nhân dân',
-                              type: 'number',
+                              type: 'text',
                               name: 'identityNumber',
                               placeholder: 'Số CMND',
                               rules: '',
@@ -293,7 +293,7 @@
                     :schema="{
                       label: 'ĐT di động',
                       title: 'Điện thoại di động',
-                      type: 'number',
+                      type: 'text',
                       name: 'phoneNumber',
                       placeholder: 'Số điện thoại di động',
                       rules: '',
@@ -310,7 +310,7 @@
                     :schema="{
                       label: 'ĐT cố định',
                       title: 'Điện thoại cố định',
-                      type: 'number',
+                      type: 'text',
                       name: 'telephoneNumber',
                       placeholder: 'Số điện thoại cố định',
                       rules: '',
@@ -344,7 +344,7 @@
                       <m-textfield
                         :schema="{
                           label: 'Tài khoản ngân hàng',
-                          type: 'number',
+                          type: 'text',
                           name: 'bankAccountNumber',
                           placeholder: 'Số tài khoản ngân hàng',
                           rules: '',
@@ -575,7 +575,7 @@ export default {
           this.hideForm();
         } else this.hideForm();
       } catch (err) {
-        this.axiosNotifyError(err);
+        this.showApiError(err);
       }
     },
 

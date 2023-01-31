@@ -5,8 +5,13 @@ class BaseService {
     this.apiUrl = apiUrl ? apiUrl : process.env.VUE_APP_API_URL;
     this.controller = controller ? controller : "undefinedController";
   }
-
-  get(params = {}) {
+  /**
+   * Lấy tất cả bản ghi
+   * @param {*} params tham số api
+   * @returns promise kết quả gọi api
+   * Author: PVLong (16/01/2023)
+   */
+  getAll(params = {}) {
     return new Promise((resolve, reject) => {
       axios
         .get(`${this.apiUrl}/${this.controller}`, { params })
@@ -18,6 +23,12 @@ class BaseService {
         });
     });
   }
+  /**
+   * Lấy danh sách bản ghi theo bộ lọc
+   * @param {*} params tham số api
+   * @returns promise kết quả gọi api
+   * Author: PVLong (16/01/2023)
+   */
   getFilter(params = {}) {
     return new Promise((resolve, reject) => {
       axios
@@ -30,6 +41,13 @@ class BaseService {
         });
     });
   }
+  /**
+   * Lấy bản ghi theo ID
+   * @param {*} params tham số api
+   * @param {*} recordID ID bản ghi
+   * @returns promise kết quả gọi api
+   * Author: PVLong (16/01/2023)
+   */
   getByID(params = {}, recordID) {
     return new Promise((resolve, reject) => {
       axios
@@ -42,6 +60,12 @@ class BaseService {
         });
     });
   }
+  /**
+   * Thêm bản ghi
+   * @param {*} params tham số api
+   * @returns promise kết quả gọi api
+   * Author: PVLong (16/01/2023)
+   */
   insert(params) {
     return new Promise((resolve, reject) => {
       axios
@@ -54,6 +78,13 @@ class BaseService {
         });
     });
   }
+  /**
+   * Sửa bản ghi
+   * @param {*} params tham số api
+   * @param {*} recordID ID bản ghi
+   * @returns promise kết quả gọi api
+   * Author: PVLong (16/01/2023)
+   */
   update(params, recordID) {
     return new Promise((resolve, reject) => {
       axios
@@ -66,6 +97,12 @@ class BaseService {
         });
     });
   }
+  /**
+   * Xóa bản ghi
+   * @param {*} recordID ID bản ghi
+   * @returns promise kết quả gọi api
+   * Author: PVLong (16/01/2023)
+   */
   delete(recordID) {
     return new Promise((resolve, reject) => {
       axios

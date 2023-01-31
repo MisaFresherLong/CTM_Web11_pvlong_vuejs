@@ -262,7 +262,8 @@ export default {
         this.debug("delete", this.employeeIds);
         const employeeService = new EmployeeService();
         for (let row of this.employeeIds) {
-          await employeeService.delete(row.EmployeeId);
+          const res = await employeeService.delete(row.EmployeeId);
+          this.debug(res);
         }
 
         this.getEmployeeData();
@@ -276,7 +277,7 @@ export default {
         };
         this.addToastMessage(content);
       } catch (error) {
-        this.axiosNotifyError(error);
+        this.showApiError(error);
       }
     },
   },

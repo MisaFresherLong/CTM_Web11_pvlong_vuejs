@@ -8,6 +8,10 @@ export const employeeModule = {
     };
   },
   actions: {
+    /**
+     * Lấy danh sách nhân viên và lưu vào store
+     * Author: PVLong (16/01/2023)
+     */
     async fetchEmployees({ state, commit }, params = null) {
       try {
         // Đặt trạng thái là đang gọi api
@@ -28,11 +32,31 @@ export const employeeModule = {
     },
   },
   mutations: {
-    setEmployees(state, payload) {
-      state.employees = payload;
+    /**
+     * Lưu danh sách nhân viên vào store
+     * @param {*} state trạng thái store
+     * @param {*} employees danh sách nhân viên
+     * Author: PVLong (16/01/2023)
+     */
+    setEmployees(state, employees) {
+      state.employees = employees;
+    },
+    /**
+     * Lưu danh sách nhân viên vào store
+     * @param {*} state trạng thái store
+     * @param {*} isFetching trạng thái gọi api
+     * Author: PVLong (16/01/2023)
+     */
+    setFetching(state, isFetching) {
+      state.isFetching = isFetching;
     },
   },
   getters: {
+    /**
+     * Lấy danh sách nhân viên từ store
+     * @param {*} state trạng thái store
+     * Author: PVLong (16/01/2023)
+     */
     getEmployees(state) {
       return state.employees;
     },
