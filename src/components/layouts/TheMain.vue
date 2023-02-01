@@ -281,11 +281,15 @@ export default {
     async deleteRows() {
       try {
         this.debug("delete", this.employeeIds);
+        // Thực thi xóa hàng loạt
         const employeeService = new EmployeeService();
-        for (let row of this.employeeIds) {
-          const res = await employeeService.delete(row.EmployeeID);
-          this.debug(res);
-        }
+        const employeeIds = this.employeeIds.map((item) => {
+          return item.EmployeeID;
+        });
+        let params = {
+          EmployeeIDs: employeeIds,
+        };
+        await employeeService.deleteBatch(params);
 
         this.getEmployeeData();
         this.hideNotify();
@@ -367,7 +371,7 @@ export default {
     },
 
     /**
-     * Thực hiện hiển thị Format file Jsono chuyển sang xlsx
+     * Thực hiện hiển thị Format file Json chuyển sang xlsx
      * Author: PVLong (20/12/2022)
      */
     FormatJson(FilterData, JsonData) {

@@ -68,7 +68,13 @@ export function Validator(formId, options = {}) {
           let checkedInput = formElement.querySelector(
             `[name=${input.name}]:checked`
           );
-          payload[input.name] = checkedInput?.value;
+          let checkedValue = checkedInput?.value;
+
+          // Nếu checked value là số, chuyển thành số
+          if (!isNaN(checkedValue)) {
+            checkedValue = parseInt(checkedValue);
+          }
+          payload[input.name] = checkedValue;
           break;
         }
         case "checkbox": {

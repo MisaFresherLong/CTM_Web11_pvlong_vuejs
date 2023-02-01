@@ -6,6 +6,7 @@ class EmployeeService extends BaseService {
     controller = controller ? controller : "api/v1/Employees";
     super(apiUrl, controller);
   }
+
   /**
    * Lấy mã nhân viên mới
    * @param {*} params tham số api
