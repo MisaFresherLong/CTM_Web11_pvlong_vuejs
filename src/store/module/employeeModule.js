@@ -25,6 +25,7 @@ export const employeeModule = {
         commit("setEmployees", res);
       } catch (error) {
         console.error(error.response);
+        throw error;
       } finally {
         // Đặt trạng thái là đã gọi xong api
         state.isFetching = false;

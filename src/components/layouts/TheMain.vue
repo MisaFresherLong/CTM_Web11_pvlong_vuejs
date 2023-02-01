@@ -40,6 +40,10 @@
             class="table-toolbar__refreshIcon m-icon icon-20 icon-refresh"
             @click="getEmployeeData()"
           ></div>
+          <div
+            class="table-toolbar__refreshIcon m-icon icon-24-20 icon-excel"
+            @click="exportExcel()"
+          ></div>
         </div>
         <div class="toolbar__left-panel" v-if="employeeIds.length != 0">
           <span
@@ -129,12 +133,20 @@ export default {
           dataProperty: "IdentityNumber",
         },
         {
+          name: "Email",
+          title: "",
+          headerClass: "w-150",
+          bodyClass: "",
+          format: "default",
+          dataProperty: "Email",
+        },
+        {
           name: "Chức danh",
           title: "",
           headerClass: "min-w-100",
           bodyClass: "",
           format: "default",
-          dataProperty: "EmployeePosition",
+          dataProperty: "JobPosition",
         },
         {
           name: "Đơn vị",
@@ -186,22 +198,31 @@ export default {
       "showNotify",
       "addToastMessage",
     ]),
+
     /**
      * Hàm lấy dữ liệu nhân viên theo bộ lọc và lưu vào biến employeeTableData
      * Author: PVLong (19/12/2022)
      */
-    getEmployeeData() {
-      // const offset = this.$constants.Paging.getOffset(page, size);
-      const pageIndex = this.$constants.Paging.getPage(this.paging.pageIndex);
-      const limit = this.$constants.Paging.getLimit(this.paging.pageSize);
-      // Chuẩn bị dữ liệu để gọi api
-      const params = {
-        employeeFilter: this.searchInput,
-        pageSize: limit,
-        pageNumber: pageIndex,
-      };
-      this.fetchEmployees(params);
+    async getEmployeeData() {
+      try {
+        // const pageIndex = this.$constants.Paging.getPage(this.paging.pageIndex);
+        const limit = this.$constants.Paging.getLimit(this.paging.pageSize);
+        const offset = this.$constants.Paging.getOffset(
+          this.paging.pageIndex,
+          this.paging.pageSize
+        );
+        // Chuẩn bị dữ liệu để gọi api
+        const params = {
+          keyword: this.searchInput,
+          limit: limit,
+          offset: offset,
+        };
+        await this.fetchEmployees(params);
+      } catch (error) {
+        this.showApiError(error);
+      }
     },
+
     /**
      * Hàm hiển thị form chi tiết nhân viên
      * @param {*} mode
@@ -262,7 +283,7 @@ export default {
         this.debug("delete", this.employeeIds);
         const employeeService = new EmployeeService();
         for (let row of this.employeeIds) {
-          const res = await employeeService.delete(row.EmployeeId);
+          const res = await employeeService.delete(row.EmployeeID);
           this.debug(res);
         }
 
@@ -279,6 +300,82 @@ export default {
       } catch (error) {
         this.showApiError(error);
       }
+    },
+
+    /**
+     * Thực hiện hiển thị Excel
+     * Author: PVLong (20/12/2022)
+     */
+    async exportExcel() {
+      try {
+        const employeeService = new EmployeeService();
+        const employeesExport = await employeeService.getAll();
+
+        import("../../js/exportToExcel").then((excel) => {
+          //data json
+          let OBJ = employeesExport.map((item, index) => {
+            return {
+              Index: index + 1,
+              employeeCode: item.EmployeeCode,
+              employeeName: item.EmployeeName,
+              gender: this.$enums.Gender.getGenderVI(item?.Gender),
+              dateOfBirth: this.dateFormatDMY(item?.DateOfBirth),
+              identityNumber: item?.IdentityNumber || "",
+              phoneNumber: item?.PhoneNumber || "",
+              email: item?.Email || "",
+              departmentName: item?.DepartmentName || "",
+            };
+          });
+          //header in excel
+          let Header = [
+            "STT",
+            "Mã nhân viên",
+            "Tên nhân viên",
+            "Giới tính",
+            "Ngày sinh",
+            "Số CMND",
+            "Số điện thoại",
+            "Email",
+            "Đơn vị",
+          ];
+          //field for map with datajson
+          let Fields = [
+            "Index",
+            "employeeCode",
+            "employeeName",
+            "gender",
+            "dateOfBirth",
+            "identityNumber",
+            "phoneNumber",
+            "email",
+            "departmentName",
+          ];
+          //data mapped field and obj
+          const DataMapped = this.FormatJson(Fields, OBJ);
+          excel.export_json_to_excel({
+            header: Header,
+            data: DataMapped,
+            sheetName: "Danh sach nhan vien",
+            filename: "Danh_sach_nhan_vien",
+            autoWidth: true,
+            bookType: "xlsx",
+          });
+        });
+      } catch (error) {
+        this.showApiError(error);
+      }
+    },
+
+    /**
+     * Thực hiện hiển thị Format file Jsono chuyển sang xlsx
+     * Author: PVLong (20/12/2022)
+     */
+    FormatJson(FilterData, JsonData) {
+      return JsonData.map((v) =>
+        FilterData.map((j) => {
+          return v[j];
+        })
+      );
     },
   },
 };

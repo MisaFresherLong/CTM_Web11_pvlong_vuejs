@@ -25,6 +25,7 @@ const genderVietnamese = {
  * Author: PVLong (20/12/2022)
  */
 function getGenderVI(gender) {
+  if (gender == null || gender == undefined) return "";
   return genderVietnamese[gender];
 }
 

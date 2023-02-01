@@ -72,7 +72,7 @@
                             :schema="{
                               label: 'Mã',
                               type: 'text',
-                              name: 'EmployeeCode',
+                              name: 'employeeCode',
                               placeholder: 'Mã nhân viên',
                               rules: 'required',
                               dataProperty: 'EmployeeCode',
@@ -91,7 +91,7 @@
                             :schema="{
                               label: 'Tên',
                               type: 'text',
-                              name: 'EmployeeName',
+                              name: 'employeeName',
                               placeholder: 'Họ và tên',
                               rules: 'required',
                               dataProperty: 'EmployeeName',
@@ -106,14 +106,14 @@
                             :schema="{
                               label: 'Đơn vị',
                               type: 'text',
-                              name: 'DepartmentId',
+                              name: 'departmentID',
                               placeholder: 'Chọn đơn vị',
                               rules: 'required',
-                              dataProperty: 'DepartmentId',
+                              dataProperty: 'DepartmentID',
                               tabindex: 70,
                             }"
                             :data="getDepartmentsKeyValue"
-                            v-model="formData.DepartmentId"
+                            v-model="formData.DepartmentID"
                           ></m-dropdown-list>
                           <!-- dropdownlist top end -->
                         </div>
@@ -123,13 +123,13 @@
                             :schema="{
                               label: 'Chức danh',
                               type: 'text',
-                              name: 'employeePosition',
+                              name: 'jobPosition',
                               placeholder: 'Chức danh',
                               rules: '',
-                              dataProperty: 'EmployeePosition',
+                              dataProperty: 'JobPosition',
                               tabindex: 100,
                             }"
-                            v-model="formData.EmployeePosition"
+                            v-model="formData.JobPosition"
                           ></m-textfield>
                           <!-- normal textfield end -->
                         </div>
@@ -239,14 +239,14 @@
                             :schema="{
                               label: 'Ngày cấp',
                               type: 'date',
-                              name: 'identityDate',
+                              name: 'identityIssueDate',
                               placeholder: 'Ngày cấp CMND',
                               rules: '',
-                              dataProperty: 'IdentityDate',
+                              dataProperty: 'IdentityIssueDate',
                               tabindex: 90,
                             }"
                             :modelValue="
-                              formFormatter.date(formData.IdentityDate)
+                              formFormatter.date(formData.IdentityIssueDate)
                             "
                           ></m-textfield>
                           <!-- date textfield end-->
@@ -257,13 +257,13 @@
                             :schema="{
                               label: 'Nơi cấp',
                               type: 'text',
-                              name: 'identityPlace',
+                              name: 'identityIssuePlace',
                               placeholder: 'Cơ quan cấp CMND',
                               rules: '',
-                              dataProperty: 'IdentityPlace',
+                              dataProperty: 'IdentityIssuePlace',
                               tabindex: 110,
                             }"
-                            v-model="formData.IdentityPlace"
+                            v-model="formData.IdentityIssuePlace"
                           ></m-textfield>
                           <!-- normal textfield end -->
                         </div>
@@ -377,13 +377,13 @@
                         :schema="{
                           label: 'Chi nhánh',
                           type: 'text',
-                          name: 'bankBranchName',
+                          name: 'bankBranch',
                           placeholder: 'Chi nhánh ngân hàng',
                           rules: '',
-                          dataProperty: 'BankBranchName',
+                          dataProperty: 'BankBranch',
                           tabindex: 160,
                         }"
-                        v-model="formData.BankBranchName"
+                        v-model="formData.BankBranch"
                       ></m-textfield>
                       <!-- normal textfield end -->
                     </div>
@@ -491,7 +491,7 @@ export default {
     getDepartmentsKeyValue() {
       if (!this.departments) return [];
       return this.departments.map((department) => ({
-        key: department.DepartmentId,
+        key: department.DepartmentID,
         value: department.DepartmentName,
       }));
     },
@@ -538,6 +538,15 @@ export default {
      * Author: PVLong (19/12/2022)
      */
     async handleSubmitForm(payload) {
+      payload = {
+        ...payload,
+        ...{
+          createdDate: "2023-01-01T16:16:20.478Z",
+          createdBy: "Nguyễn Văn Cha",
+          modifiedDate: "2023-01-01T16:16:20.478Z",
+          modifieddBy: "Nguyễn Văn Cha",
+        },
+      };
       try {
         const employeeService = new EmployeeService();
         if (this.isCreateForm) {
@@ -553,7 +562,7 @@ export default {
           this.addToastMessage(content);
         } else {
           // Gọi api
-          await employeeService.update(payload, this.formContent.employeeId);
+          await employeeService.update(payload, this.formContent.employeeID);
 
           // Hiển thị toast-message thành công
           const content = {
@@ -605,9 +614,13 @@ export default {
      * Hàm lấy dữ liệu đơn vị
      * Author: PVLong (19/12/2022)
      */
-    getDepartments() {
-      if (this.departments) return;
-      this.fetchDepartments();
+    async getDepartments() {
+      try {
+        if (this.departments) return;
+        await this.fetchDepartments();
+      } catch (error) {
+        this.showApiError(error);
+      }
     },
 
     /**
@@ -636,7 +649,7 @@ export default {
         const params = {};
         const res = await employeeService.getByID(
           params,
-          this.formContent.employeeId
+          this.formContent.employeeID
         );
         this.formData = res;
       } catch (error) {

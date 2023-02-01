@@ -269,6 +269,7 @@
 
 #employee-form .m-popup-container {
   width: 900px;
+  overflow: hidden;
 }
 
 #employee-form {

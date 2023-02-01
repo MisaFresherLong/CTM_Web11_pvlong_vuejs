@@ -9,6 +9,10 @@
   /* background-color: var(--wcag-white-color); */
 }
 
+.m-dropdownlist .m-input-container__input:focus~.m-dropdownlist-data {
+  display: block;
+}
+
 .m-dropdownlist .m-input-container__icon:focus+.m-dropdownlist-data {
   display: block;
 }

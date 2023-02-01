@@ -34,9 +34,9 @@
             class="m-tr"
             v-for="(row, index) in data.Data"
             :key="index"
-            :data-key="row.EmployeeId"
+            :data-key="row.EmployeeID"
             :data-code="row.EmployeeCode"
-            @dblclick="showEmployeeForm(row.EmployeeId)"
+            @dblclick="showEmployeeForm(row.EmployeeID)"
           >
             <!-- row checkbox -->
             <td class="m-td m-td-multi" @dblclick.stop>
@@ -69,7 +69,7 @@
               <div class="m-context-menu-btn">
                 <button
                   class="m-context-menu-btn__label editRowBtn"
-                  @click="showEmployeeForm(row.EmployeeId)"
+                  @click="showEmployeeForm(row.EmployeeID)"
                 >
                   Sửa
                 </button>
@@ -200,9 +200,9 @@ export default {
      * @param {*} mode
      * Author: PVLong (19/12/2022)
      */
-    showEmployeeForm(employeeId, mode = null) {
+    showEmployeeForm(employeeID, mode = null) {
       if (!mode) mode = this.$enums.FormMode.UPDATE;
-      this.showForm({ mode, employeeId });
+      this.showForm({ mode, employeeID });
     },
 
     /**
@@ -246,7 +246,7 @@ export default {
       $("tbody .m-input-checkbox:checked").each(function () {
         const dataKey = $(this).parents(".m-tr").attr("data-key");
         const dataCode = $(this).parents(".m-tr").attr("data-code");
-        rowIds.push({ EmployeeId: dataKey, EmployeeCode: dataCode });
+        rowIds.push({ EmployeeID: dataKey, EmployeeCode: dataCode });
       });
       this.$emit("update:checkedRowIds", rowIds);
     },
@@ -274,7 +274,7 @@ export default {
         cancelBtnTitle: "Không",
         isCancelBtnShow: true,
         primaryBtnCallback: () => {
-          this.deleteRow(row.EmployeeId, row.EmployeeCode);
+          this.deleteRow(row.EmployeeID, row.EmployeeCode);
         },
       };
       this.showNotify(notifyContent);

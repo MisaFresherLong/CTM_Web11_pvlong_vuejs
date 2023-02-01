@@ -1,6 +1,6 @@
 const defaultFormContent = {
   mode: 0,
-  employeeId: null,
+  employeeID: null,
 };
 const defaultNotifyContent = {
   mode: 0,

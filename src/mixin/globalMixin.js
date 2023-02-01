@@ -45,7 +45,7 @@ var globalMixin = {
       // Hiển thị notify lỗi
       const notifyContent = {
         mode: this.$enums.NotifyMode.WARNING,
-        message: err.response.data.userMsg,
+        message: err.response.data.UserMsg,
       };
       // this.debug(this.$store);
       this.$store.dispatch("showNotify", notifyContent);
@@ -58,7 +58,7 @@ var globalMixin = {
      * Author: PVLong (19/12/2022)
      */
     dateFormatDMY(value, separate = "/") {
-      if (!value) return value;
+      if (!value) return "";
       let dateInstance = new Date(value);
       let date = dateInstance.getDate();
       let month = dateInstance.getMonth() + 1;
@@ -75,7 +75,7 @@ var globalMixin = {
      * Author: PVLong (19/12/2022)
      */
     dateFormatYMD(value, separate = "/") {
-      if (!value) return value;
+      if (!value) return "";
       let dateInstance = new Date(value);
       let date = dateInstance.getDate();
       let month = dateInstance.getMonth() + 1;
