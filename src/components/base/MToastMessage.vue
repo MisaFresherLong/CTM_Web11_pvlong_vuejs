@@ -4,7 +4,9 @@
       <div class="toast-left">
         <div class="toast-icon icon-20"></div>
         <div class="toast-title">{{ toastMessage.title }}</div>
-        <div class="toast-body-text">{{ toastMessage.body }}</div>
+        <div class="toast-body-text">
+          <span v-html="toastMessage.body"></span>
+        </div>
       </div>
       <div class="toast-right">
         <div

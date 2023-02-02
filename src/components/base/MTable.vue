@@ -17,10 +17,10 @@
             </th>
             <th
               class="m-th --text-left"
-              :class="col.headerClass"
+              :class="col?.headerClass"
               v-for="col in schema"
               :key="col"
-              :title="col.title"
+              :title="col?.title"
             >
               {{ col.name }}
             </th>
@@ -48,7 +48,7 @@
             <!-- row middle content -->
             <td
               class="m-td"
-              :class="col.bodyClass"
+              :class="col?.bodyClass"
               v-for="col in schema"
               :key="col"
             >
@@ -142,12 +142,6 @@ export default {
   },
   data() {
     return {
-      tableFormatter: {
-        default: (value) => value,
-        dateDMY: (value) => this.dateFormatDMY(value),
-        dateYMD: (value) => this.dateFormatYMD(value),
-        gender: (value) => this.$enums.Gender.getGenderVI(value),
-      },
       isLoading: false,
     };
   },
@@ -269,7 +263,7 @@ export default {
     openConfirmDeleteNotify(row) {
       const notifyContent = {
         mode: this.$enums.NotifyMode.WARNING,
-        message: `Bạn có thực sự muốn xóa Nhân viên <${row.EmployeeCode}> không?`,
+        message: `Bạn có thực sự muốn xóa nhân viên &lt;${row.EmployeeCode}&gt; không?`,
         primaryBtnTitle: "Xóa",
         cancelBtnTitle: "Không",
         isCancelBtnShow: true,

@@ -450,13 +450,6 @@ export default {
   components: { MTextfield, MDropdownList },
   data() {
     return {
-      formFormatter: {
-        date: (value) => this.dateFormatYMD(value, "-"),
-        gender: (value) => {
-          if (value == null) return 2;
-          return value;
-        },
-      },
       formData: {},
       isReopenForm: false,
     };
@@ -541,9 +534,7 @@ export default {
       payload = {
         ...payload,
         ...{
-          createdDate: "2023-01-01T16:16:20.478Z",
           createdBy: "Nguyễn Văn Cha",
-          modifiedDate: "2023-01-01T16:16:20.478Z",
           modifieddBy: "Nguyễn Văn Cha",
         },
       };

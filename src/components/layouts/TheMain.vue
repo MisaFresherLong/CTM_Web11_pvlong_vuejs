@@ -94,31 +94,24 @@ export default {
       employeeTableSchema: [
         {
           name: "Mã nhân viên",
-          title: "",
           headerClass: "w-150",
-          bodyClass: "",
           format: "default",
           dataProperty: "EmployeeCode",
         },
         {
           name: "Tên nhân viên",
-          title: "",
-          headerClass: "min-w-150",
-          bodyClass: "",
+          headerClass: "min-w-200",
           format: "default",
           dataProperty: "EmployeeName",
         },
         {
           name: "Giới tính",
-          title: "",
           headerClass: "w-100",
-          bodyClass: "",
           format: "gender",
           dataProperty: "Gender",
         },
         {
           name: "Ngày sinh",
-          title: "",
           headerClass: "w-100 --text-center",
           bodyClass: "--text-center",
           format: "dateDMY",
@@ -128,31 +121,24 @@ export default {
           name: "Số CMND",
           title: "Số chứng minh nhân dân",
           headerClass: "w-150",
-          bodyClass: "",
           format: "default",
           dataProperty: "IdentityNumber",
         },
         {
           name: "Email",
-          title: "",
           headerClass: "w-150",
-          bodyClass: "",
           format: "default",
           dataProperty: "Email",
         },
         {
           name: "Chức danh",
-          title: "",
-          headerClass: "min-w-100",
-          bodyClass: "",
+          headerClass: "min-w-125",
           format: "default",
           dataProperty: "JobPosition",
         },
         {
           name: "Đơn vị",
-          title: "",
-          headerClass: "min-w-150",
-          bodyClass: "",
+          headerClass: "min-w-200",
           format: "default",
           dataProperty: "DepartmentName",
         },
@@ -258,12 +244,9 @@ export default {
      * Author: PVLong (20/12/2022)
      */
     openConfirmDeleteNotify() {
-      const idsMessage = this.employeeIds.reduce((total, current) => {
-        return total + ` <${current.EmployeeCode}> `;
-      }, "");
       const notifyContent = {
         mode: this.$enums.NotifyMode.WARNING,
-        message: `Bạn có thực sự muốn xóa Nhân viên ${idsMessage} không?`,
+        message: `Bạn có thực sự muốn xóa <b>${this.employeeIds.length}</b> nhân viên?`,
         primaryBtnTitle: "Xóa",
         cancelBtnTitle: "Không",
         isCancelBtnShow: true,
@@ -298,7 +281,7 @@ export default {
         const content = {
           mode: this.$enums.ToastMessageMode.SUCCESS,
           message: "Thành công",
-          body: `Xóa các nhân viên thành công.`,
+          body: `Xóa <b>${this.employeeIds.length}</b> nhân viên thành công.`,
         };
         this.addToastMessage(content);
       } catch (error) {
@@ -313,52 +296,26 @@ export default {
     async exportExcel() {
       try {
         const employeeService = new EmployeeService();
-        const employeesExport = await employeeService.getAll();
+        const rawData = await employeeService.getAll();
+        const schema = this.employeeTableSchema;
 
         import("../../js/exportToExcel").then((excel) => {
-          //data json
-          let OBJ = employeesExport.map((item, index) => {
-            return {
-              Index: index + 1,
-              employeeCode: item.EmployeeCode,
-              employeeName: item.EmployeeName,
-              gender: this.$enums.Gender.getGenderVI(item?.Gender),
-              dateOfBirth: this.dateFormatDMY(item?.DateOfBirth),
-              identityNumber: item?.IdentityNumber || "",
-              phoneNumber: item?.PhoneNumber || "",
-              email: item?.Email || "",
-              departmentName: item?.DepartmentName || "",
-            };
+          // Định dạng dữ liệu trước khi xuất
+          let formattedData = this.formatRawData(schema, rawData);
+
+          // Chuyển từng phần tử của formattedData từ object sang array
+          const arrayData = this.getArrayData(formattedData);
+
+          // Chuẩn bị header
+          const header = schema.map((col) => {
+            return col.name;
           });
-          //header in excel
-          let Header = [
-            "STT",
-            "Mã nhân viên",
-            "Tên nhân viên",
-            "Giới tính",
-            "Ngày sinh",
-            "Số CMND",
-            "Số điện thoại",
-            "Email",
-            "Đơn vị",
-          ];
-          //field for map with datajson
-          let Fields = [
-            "Index",
-            "employeeCode",
-            "employeeName",
-            "gender",
-            "dateOfBirth",
-            "identityNumber",
-            "phoneNumber",
-            "email",
-            "departmentName",
-          ];
-          //data mapped field and obj
-          const DataMapped = this.FormatJson(Fields, OBJ);
+          header.unshift("STT");
+
+          // Thực thi xuất dữ liệu
           excel.export_json_to_excel({
-            header: Header,
-            data: DataMapped,
+            header: header,
+            data: arrayData,
             sheetName: "Danh sach nhan vien",
             filename: "Danh_sach_nhan_vien",
             autoWidth: true,
@@ -371,15 +328,41 @@ export default {
     },
 
     /**
-     * Thực hiện hiển thị Format file Json chuyển sang xlsx
+     * Định dạng dữ liệu
+     * @param {*} schema schema của bảng dữ liệu
+     * @param {*} rawData dữ liệu chưa được định dạng
      * Author: PVLong (20/12/2022)
      */
-    FormatJson(FilterData, JsonData) {
-      return JsonData.map((v) =>
-        FilterData.map((j) => {
-          return v[j];
-        })
-      );
+    formatRawData(schema, rawData) {
+      // Lặp qua từng dòng dữ liệu
+      return rawData.map((row, index) => {
+        // Lặp qua từng cột của dòng và format từng trường dữ liệu
+        return schema.reduce(
+          (previousValue, colSchema) => {
+            const key = colSchema.dataProperty;
+            const value = row[key];
+            const formatter = colSchema.format;
+            const formattedValue = this.tableFormatter[formatter](value);
+            return Object.assign(previousValue, {
+              [key]: formattedValue,
+            });
+          },
+          { index: index + 1 }
+        );
+      });
+    },
+
+    /**
+     * Chuyển mảng object sang mảng array: [{}, {}] -> [[], []]
+     * Author: PVLong (20/12/2022)
+     */
+    getArrayData(data) {
+      return data.map((row) => {
+        const cols = Object.keys(row);
+        return cols.map((col) => {
+          return row[col];
+        });
+      });
     },
   },
 };

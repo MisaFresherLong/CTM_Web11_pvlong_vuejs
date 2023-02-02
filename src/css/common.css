@@ -210,6 +210,11 @@ input[type=number] {
   min-width: 100px;
 }
 
+.min-w-125 {
+  min-width: 125px;
+
+}
+
 .min-w-150 {
   min-width: 150px;
 }

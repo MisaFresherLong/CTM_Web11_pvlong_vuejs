@@ -1,7 +1,28 @@
 import helper from "@/plugins/helper";
 
 var globalMixin = {
-  computed: {},
+  data() {
+    return {};
+  },
+  computed: {
+    formFormatter() {
+      return {
+        date: (value) => helper.dateFormatYMD(value, "-"),
+        gender: (value) => {
+          if (value == null) return 2;
+          return value;
+        },
+      };
+    },
+    tableFormatter() {
+      return {
+        default: (value) => (value ? value : ""),
+        dateDMY: (value) => helper.dateFormatDMY(value),
+        dateYMD: (value) => helper.dateFormatYMD(value),
+        gender: (value) => this.$enums.Gender.getGenderVI(value),
+      };
+    },
+  },
   methods: {
     /**
      * Hàm hiển thị log
@@ -11,6 +32,7 @@ var globalMixin = {
     log(...args) {
       helper.log(...args);
     },
+
     /**
      * Hàm hiển thị waning
      * @param  {...any} args
@@ -19,6 +41,7 @@ var globalMixin = {
     warn(...args) {
       helper.warn(...args);
     },
+
     /**
      * Hàm hiển thị error
      * @param  {...any} args
@@ -27,6 +50,7 @@ var globalMixin = {
     error(...args) {
       helper.error(...args);
     },
+
     /**
      * Hàm hiển thị debug
      * @param  {...any} args
@@ -35,6 +59,7 @@ var globalMixin = {
     debug(...args) {
       helper.debug(...args);
     },
+
     /**
      * Hàm xử lý api error
      * @param {*} err promise error của api
@@ -45,44 +70,9 @@ var globalMixin = {
       // Hiển thị notify lỗi
       const notifyContent = {
         mode: this.$enums.NotifyMode.WARNING,
-        message: err.response.data.UserMsg,
+        message: err?.response?.data?.UserMsg,
       };
-      // this.debug(this.$store);
       this.$store.dispatch("showNotify", notifyContent);
-    },
-    /**
-     * Định dạng ngày tháng theo dạng dd/mm/yyyy
-     * @param {*} value giá trị ngày tháng
-     * @param {*} separate phân cách
-     * @returns Ngày tháng được format
-     * Author: PVLong (19/12/2022)
-     */
-    dateFormatDMY(value, separate = "/") {
-      if (!value) return "";
-      let dateInstance = new Date(value);
-      let date = dateInstance.getDate();
-      let month = dateInstance.getMonth() + 1;
-      const year = dateInstance.getFullYear();
-      if (date < 10) date = "0" + String(date);
-      if (month < 10) month = "0" + String(month);
-      return [date, month, year].join(separate);
-    },
-    /**
-     * Định dạng ngày tháng theo dạng yyyy/mm/dd
-     * @param {*} value giá trị ngày tháng
-     * @param {*} separate phân cách
-     * @returns Ngày tháng được format
-     * Author: PVLong (19/12/2022)
-     */
-    dateFormatYMD(value, separate = "/") {
-      if (!value) return "";
-      let dateInstance = new Date(value);
-      let date = dateInstance.getDate();
-      let month = dateInstance.getMonth() + 1;
-      const year = dateInstance.getFullYear();
-      if (date < 10) date = "0" + String(date);
-      if (month < 10) month = "0" + String(month);
-      return [year, month, date].join(separate);
     },
   },
 };

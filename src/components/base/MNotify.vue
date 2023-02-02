@@ -4,7 +4,7 @@
       <div class="m-notify-header">
         <div class="m-notify-header__icon"></div>
         <div class="m-notify-header__message" v-if="isStringMessage">
-          {{ notifyContent.message }}
+          <span v-html="notifyContent.message"></span>
         </div>
         <div class="m-notify-header__message" v-else>
           <li
